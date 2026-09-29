@@ -19,7 +19,7 @@ const services = [
   ['airplane_ticket', 'Flights & Ticketing', 'Find and book flights for business, holidays, family trips and everything in between.', 'Get Flight Prices', 'IATA Certified Global Inventory'],
   ['contact_page', 'Visa Services', 'Get professional assistance with your visa application, documentation and processing journey.', 'Start Your Visa', '99.4% Approval Assistance'],
   ['sailing', 'Tours & Holidays', 'Discover curated destinations, holiday packages and experiences designed around how you want to travel.', 'Explore Tours', 'Handcrafted Itineraries'],
-  ['school', 'School Placement', 'Bespoke guidance for prestigious schools, universities, admissions strategy and relocation support.', 'Explore School Placement', 'Premier Academic Concierge'],
+  ['groups', 'Group Tours', 'Travelling with friends, family, colleagues or a community? Join one of our curated group journeys or let us create one for you.', 'View Group Tours', 'Curated Departures'],
   ['corporate_fare', 'Corporate Travel', 'Simplify business travel with dedicated support for flights, visas, employee travel and corporate bookings.', 'Explore Corporate Travel', 'Dedicated Account Executive'],
   ['diamond', 'Concierge', 'Need something beyond a flight or holiday? Tell us what you need and our concierge team can make it happen.', 'Make a Concierge Request', '24/7 White-Glove Desk'],
 ];
@@ -30,7 +30,6 @@ const serviceRoutes = {
   'Tours & Holidays': '/curated-tours',
   'Group Tours': '/group-tours',
   'Corporate Travel': '/corporate-travel',
-  'School Placement': '/school-placement',
   Concierge: '/concierge-lifestyle',
 };
 
