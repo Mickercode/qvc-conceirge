@@ -225,25 +225,26 @@ export default function LandingPage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBizvCcg6DvJdXImWGyHyKYEoA6-7iOUrjWZdHecQFlGMAb6bpBgWd311A_Lj8VwfM4fQUcW_1-GT3z70-Nx9dd9g6AFH13txQEQr0qMCQlEWKWeBbl6_NJDoPj0Wj_Rxn9BlLer9A8W0VmgvCEcXbzwvtyTEWqJI8hBvf0ThFdYlnmp8UctUi920433I5h2Ti622n_LtMI2RJUmxvUFuPV769HCfuLjd7Q8WFb3gqI0M9x1KCO91n8')",
                   }}
                 ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
                 <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-2xl flex flex-col items-start">
-                    <div className="flex items-center gap-space-sm mb-space-sm">
+                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
                       <span className="w-8 h-px bg-primary-container"></span>
                       <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
                         Your Journey Starts Here
                       </span>
+                      <span className="w-8 h-px bg-primary-container"></span>
                     </div>
-                    <h1 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold">
+                    <h1 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
                       The world is yours to explore. We bring it all together.
                     </h1>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mb-space-lg font-normal leading-relaxed">
+                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
                       From bespoke commercial tickets and private aviation to curated
                       tours and discreet consular visas, find every travel service
                       coordinated under one private roof.
                     </p>
-                    <div className="flex flex-wrap items-center gap-space-md">
+                    <div className="flex flex-wrap items-center justify-center gap-space-md">
                       <a
                         className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
                         data-path="tickets"
@@ -282,25 +283,26 @@ export default function LandingPage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB1T9VUlHkC4GsWMXGalIUI7eSA6Fu-UdMVHrC-5IGUDLu0gMH5HkPUctCqZ7KfyiA716mpRt3SwEa5DtzsTnxkOA31VoUh3EuN8UaxDYhaVW5amBtj3y8MJ6sNlPpIoljeKGHRgND2Utog4_X1kLSwCHLW7xh7OuoxUHV3t37sm7tdxYHaUyjxWgz5O_jzFykjxpWuBC8KZ54r5BoFMV0Bat0I-p4DejNqdFdsXyLQNRQIfb1wh39_')",
                   }}
                 ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
                 <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-2xl flex flex-col items-start">
-                    <div className="flex items-center gap-space-sm mb-space-sm">
+                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
                       <span className="w-8 h-px bg-primary-container"></span>
                       <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
                         Your Next Chapter
                       </span>
+                      <span className="w-8 h-px bg-primary-container"></span>
                     </div>
-                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold">
+                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
                       Big dreams deserve a simpler way forward.
                     </h2>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mb-space-lg font-normal leading-relaxed">
+                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
                       Explore premier British and North American school placement support
                       with vetted advisors navigating every dossier, interview, and
                       matriculation milestone.
                     </p>
-                    <div className="flex flex-wrap items-center gap-space-md">
+                    <div className="flex flex-wrap items-center justify-center gap-space-md">
                       <a
                         className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
                         data-path="school-placement"
@@ -339,25 +341,26 @@ export default function LandingPage() {
                       "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvBGt4sJsODUQbMgHKY5dIwP2mR8wBTSjg_Za28jLjAehf0_-BZHsm8ou8f_ttRunxvH2JUExyMRWNLbi_14hVzcY-m8Ti8FUYuYrgcOlTt4gXMTosuWIyyya3C1MoJegD6_dIJ4uE7JFdlxYs8D2VNWI28TagwprU1sf1u6JW1EnqE4Nd4ZgYVq1ZpjpiNQCSPx0Bwt4v76XUKUzlMSNJ1sBShhIZOQW8USMzaRxFJLDTSzYZoKLB')",
                   }}
                 ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
                 <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-2xl flex flex-col items-start">
-                    <div className="flex items-center gap-space-sm mb-space-sm">
+                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
                       <span className="w-8 h-px bg-primary-container"></span>
                       <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
                         More Time For What Matters
                       </span>
+                      <span className="w-8 h-px bg-primary-container"></span>
                     </div>
-                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold">
+                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
                       Tell us what you need. Consider it taken care of.
                     </h2>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mb-space-lg font-normal leading-relaxed">
+                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
                       From confidential personal errands and bespoke lifestyle requests to
                       VIP arrivals, QVC coordinates the nuanced friction points that elevate
                       everyday living.
                     </p>
-                    <div className="flex flex-wrap items-center gap-space-md">
+                    <div className="flex flex-wrap items-center justify-center gap-space-md">
                       <a
                         className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
                         data-path="concierge-services"
