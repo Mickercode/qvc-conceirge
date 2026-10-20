@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="scroll-smooth" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="web_standard" name="shell-type" />
-    <meta name="description" content="QVC Concierge | Bespoke Travel & Lifestyle" />
-    <title>QVC Concierge | Bespoke Travel & Lifestyle</title>
+    <meta name="description" content="From journeys and new opportunities to life’s important details, discover services and personalised support in one convenient place." />
+    <title>QVC Concierge | Whatever Life Takes You To. We'll Help You Get There.</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -30,69 +30,6 @@
       ::-webkit-scrollbar {
         display: none;
       }
-      /* 3D Motion & Card Depth styles */
-      .perspective-container {
-        perspective: 1200px;
-      }
-      @keyframes subtleFloat1 {
-        0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        50% { transform: translateY(-7px) rotateX(1.2deg) rotateY(-1deg); }
-      }
-      @keyframes subtleFloat2 {
-        0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        50% { transform: translateY(-9px) rotateX(-1deg) rotateY(1.3deg); }
-      }
-      @keyframes subtleFloat3 {
-        0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        50% { transform: translateY(-6px) rotateX(1.4deg) rotateY(1deg); }
-      }
-      @keyframes subtleFloat4 {
-        0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        50% { transform: translateY(-8px) rotateX(-1.2deg) rotateY(-1.2deg); }
-      }
-      @keyframes subtleFloat5 {
-        0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        50% { transform: translateY(-10px) rotateX(1.3deg) rotateY(-0.8deg); }
-      }
-      .animate-float-1 { animation: subtleFloat1 7s ease-in-out infinite; }
-      .animate-float-2 { animation: subtleFloat2 8.5s ease-in-out infinite 0.8s; }
-      .animate-float-3 { animation: subtleFloat3 7.8s ease-in-out infinite 1.6s; }
-      .animate-float-4 { animation: subtleFloat4 8.2s ease-in-out infinite 2.2s; }
-      .animate-float-5 { animation: subtleFloat5 9s ease-in-out infinite 1.2s; }
-
-      /* Interactive Spotlight & Dimming for Siblings */
-      .cards-cluster:hover .interactive-service-card:not(:hover) {
-        opacity: 0.8;
-        transform: scale(0.99);
-      }
-      .interactive-service-card {
-        transform-style: preserve-3d;
-        will-change: transform, box-shadow;
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, opacity 0.35s ease;
-      }
-      .interactive-service-card:hover {
-        opacity: 1 !important;
-        filter: none !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 89, 164, 0.16), 0 12px 24px -8px rgba(15, 23, 42, 0.12);
-      }
-      .interactive-service-card.is-active {
-        border-color: #0072ce !important;
-        box-shadow: 0 20px 45px -10px rgba(0, 89, 164, 0.18), 0 0 0 1px #0072ce !important;
-      }
-
-      /* Accordion Drawer Expansion */
-      .service-expand-panel {
-        transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), margin 0.4s ease;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .animate-float-1, .animate-float-2, .animate-float-3, .animate-float-4, .animate-float-5 {
-          animation: none !important;
-        }
-        .interactive-service-card, .service-expand-panel {
-          transition: none !important;
-        }
-      }
     </style>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -101,6 +38,21 @@
         theme: {
           extend: {
             "colors": {
+              "brand": {
+                "blue": "#0072CE",
+                "blueHover": "#005fae",
+                "cobalt": "#0066FF",
+                "navy": "#0B192C",
+                "obsidian": "#111827",
+                "slateDark": "#1E293B",
+                "muted": "#64748B",
+                "slate": "#475569",
+                "surface": "#F8FAFC",
+                "mist": "#F4F6F8",
+                "border": "#E2E8F0",
+                "gold": "#C5A059",
+                "whatsapp": "#25D366"
+              },
               "surface-dim": "#f4f6f8",
               "inverse-on-surface": "#eef0fe",
               "surface-variant": "#dfe2ef",
@@ -149,12 +101,6 @@
               "outline": "#e2e8f0",
               "tertiary-fixed-dim": "#f7bd43"
             },
-            "borderRadius": {
-              "DEFAULT": "0.125rem",
-              "lg": "0.25rem",
-              "xl": "0.5rem",
-              "full": "0.75rem"
-            },
             "spacing": {
               "space-xs": "0.25rem",
               "space-sm": "0.5rem",
@@ -166,7 +112,14 @@
               "space-xl": "2.5rem",
               "margin": "1.5rem"
             },
+            "boxShadow": {
+              "subtle": "0 4px 20px -2px rgba(11, 25, 44, 0.04)",
+              "card-hover": "0 20px 35px -8px rgba(0, 114, 206, 0.08), 0 8px 16px -6px rgba(11, 25, 44, 0.04)",
+              "glow-cobalt": "0 10px 24px -4px rgba(0, 114, 206, 0.32)",
+              "editorial-image": "0 30px 60px -15px rgba(11, 25, 44, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.8)"
+            },
             "fontFamily": {
+              "sans": ["Plus Jakarta Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
               "headline-md": ["Plus Jakarta Sans", "sans-serif"],
               "body-sm": ["Plus Jakarta Sans", "sans-serif"],
               "display-md": ["Plus Jakarta Sans", "sans-serif"],

@@ -1,1490 +1,825 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-const LOGO_URL =
-  'https://lh3.googleusercontent.com/aida/AEtjO1W3tTyAFWs4FRfENIkRJTncZ8N8N-G316BYl-PxxMugfxsVRw2ljskM0G1TJLUQs9l-ewp6PIVnWxJyIKFtnFePVzKQxVxvjgNyTKnjRYji8TePKSJXUDLizul0SR9Fl23GJHndT5agW0GsHf-8lPV1PwtbU9u9Poo-4U4v2xmUM6W9PNFEPccqXz97CtrM_PQUgP2q6TmoPSpUlhf3Rs9dRU9R4hDueCjq45aAF5qahq4XrLQ_337sX8yVAYoWm5pSycvCTSec0A';
+const LOGO_SRC = '/logo.jpeg';
+
+const IMAGES = {
+  heroPortrait:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuAKWSspKfqb45viwY46A4nGU15wrD1wrpzDndTfy2gsfN-tMXqwWZ2I69_0kCLbW9EqIq03gMNHCFrU3IL5KbUYu8hvD2OaE4_H4CUjD7wyewX83qjbJrjpOZx6PChs6-ghPoTzogwSX3bjEgFiDaqXQRZj5Uw5BENDnW0mk4acs9k_tJilvEDAt03Zl6_jQYXWgmef4ZDAy63rbmdOAUxcY9j43Rsw2lgCH9TjtAc7E-066qGsXTCJ',
+  tickets:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuB8qdWgrPD74mTl4k3YLjFScP-G6OsWxJDljPGbKNW4xDkV4zTVH22iHfaZCwHWpk758Up4LzpIF7LIJil_o2Wk4t722A3mUiprMq9B-9tUD7eHkjzij26BE4H2ShYC-_qLOecIDdq7MyoO3nAHfJjOrK42NF0vCHOjxF8K0bAzSHuCh2nZZoJA9vIm4_jIRhRtYFjhVv5wfgiQc0R-KB5_yteQVgOZ5_GX4SwB-WK--BZQ2kcPdhxl',
+  tours:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuC1SC0Do71U2Q5BGwmN0amogwQuU_vEqkGiBois4wbgC108ZPXC_TUHLpS70vT_XghqHcIwsY1Ne-ynZbTZW50avxBbKhV0q-iA0PxmFlvnnWomZ8LAee7LW78XMb05aotpuqn324RsB2VB9s40xnW5NnfUBeYHjwytYpn8LK1qkXgLgr0rEx7aiv_hJO547rrcqs4NwLLTq2ZQzLqy26ZnXOENzg-P_XivcFLsLtcvUvOt96_HOQAb',
+  visa:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuAuf2fMAoGNJzCnvaVR4gBcCJGV7LGz55FlYLH6fwo2CGt-Tb_SjWrCBkvu4T5gFr4OKAE0M55nYoNI8_LJMndm3_NgYie2AJ8VOs2dV-Q-6v_BCHpSHZNS__per3xlHgm-pOMnnc08659NmVimoHqfQuaK4eT0hEvjRSpaPltEq7F-HRHLx3aC73cMWI1JXaLr-5qXQPSAV74KkAWugw7TCGW_gkcfxUeV6jVGMnpCPvRoodkg4nD5',
+  school:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuDWqvr7VzIuCdbz55yDicDz4i82dN28eB9eIm6f92fCCbMk2D5QxBDT8z_oJoa82SAXoksQdb--1EYB-s8orJmyWiL1LXGF5IgpoEfQYPDXXFFZpBEd4MVQ4nh5jupGTFa4cw2IokGVmUw3fUK48T35efvraD7Ia5sG3shsmajGXmlhZ5sqMB3Y0dhLsTe9OaiPOCah_eYGstOSNnPU4Tlfvn-MBpZy-ZIT7Mk3-4u-_tGwoJ6pv64_',
+  concierge:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBlcCuPQsjWcEYijaarj5MvGkSj5AnrO7ibgVWMxiKM6fBcUZuI1QLcMX41Q635WW_syq6rJBlcPQSA6OvllzSbzkDdH8cosNSQVjLETZWjnuAG8Isj0klYm3yKRoQkyiKVzV5EpC2wWnavoRq9b-L04KlD64cy_m1igK1GYNCBaMUBnNm8tVLabsNTTnedMyiNENMBXyE_jUDKdPSUiFetXTPFiOiPCIbmgaZiVShZ9AGGgADYo6yp',
+  advisory:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuATIij0RcaQfOVjpJpsxa1TFzHIfKv3nUSBx_MtuUDBVLAIDDF_3VkkkMYEy9CnBggEBU3QHdWGQnj9KnVDARXYFS14pKM6da4q8qxO3QHscylP-x5XlfkEf4JZ4etvSklGuXon4f6Z5H4BB1XNANY_Tvs_cuh3fDRTFO1glhF2C52jyxJZfQ9VvYWo-EbfUgny_5sAgIHYHhHtA4HB7P5ohGvNEMpqV0XLw0_ylS1A3qoTL6ovS0pU',
+};
+
+const NAV_LINKS = [
+  { label: 'Home', href: '#home', active: true },
+  { label: 'Our Services', href: '#services' },
+  { label: 'About QVC', href: '#trust' },
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Contact', href: '#enquiry' },
+];
+
+const SERVICES = [
+  {
+    id: 'tickets',
+    number: '01',
+    category: 'Aviation',
+    title: 'Tickets',
+    description:
+      'First-class commercial reservations, private jet charters, and priority tarmac handling tailored for seamless corporate and family itineraries.',
+    image: IMAGES.tickets,
+    alt: 'Flight Tickets & Private Aviation',
+    href: '/tickets-and-aviation',
+    span: 'lg:col-span-7',
+    wide: true,
+  },
+  {
+    id: 'tours',
+    number: '02',
+    category: 'Travel',
+    title: 'Tours',
+    description:
+      'Bespoke travel experiences, private Mediterranean retreats, and customized cultural journeys organized with discreet attention.',
+    image: IMAGES.tours,
+    alt: 'Curated Bespoke Tours',
+    href: '/curated-tours',
+    span: 'lg:col-span-5',
+    imageHeight: 'h-44 sm:h-48',
+    titleSize: 'text-xl sm:text-2xl',
+  },
+  {
+    id: 'visa',
+    number: '03',
+    category: 'Mobility',
+    title: 'Visa Assistance',
+    description:
+      'End-to-end visa guidance, diplomatic documentation review, and expediting pathways across key international borders.',
+    image: IMAGES.visa,
+    alt: 'Visa Assistance and Mobility',
+    href: '/visa-consultancy',
+    span: 'lg:col-span-4',
+  },
+  {
+    id: 'school',
+    number: '04',
+    category: 'Education',
+    title: 'School Placement',
+    description:
+      'Authoritative counsel for British boarding schools, international colleges, entrance examinations, and certified BBSN guardianship.',
+    image: IMAGES.school,
+    alt: 'School Placement Advisory',
+    href: '/school-placement',
+    span: 'lg:col-span-4',
+  },
+  {
+    id: 'concierge',
+    number: '05',
+    category: 'Lifestyle',
+    title: 'Concierge Services',
+    description:
+      'Private lifestyle management, unlisted property sourcing, Michelin reservations, and customized errands with personal discretion.',
+    image: IMAGES.concierge,
+    alt: 'Bespoke Concierge & Lifestyle Management',
+    href: '/concierge-lifestyle',
+    span: 'lg:col-span-4',
+  },
+];
+
+const STEPS = [
+  {
+    number: '01',
+    title: 'Tell Us What You Need',
+    description: 'Choose a service and share the details of your request via online enquiry, message, or phone.',
+    accent: false,
+  },
+  {
+    number: '02',
+    title: 'We Coordinate the Next Steps',
+    description: 'Our team reviews your request and contacts you to clarify the details, options, and timelines.',
+    accent: true,
+  },
+  {
+    number: '03',
+    title: 'Move Forward With Confidence',
+    description: 'We help coordinate the process and keep you informed as your request progresses to completion.',
+    accent: false,
+  },
+];
+
+const TRUST_POINTS = [
+  {
+    title: 'Single Point of Contact',
+    description: 'No fragmented desks. One liaison manages all your tickets, schooling, and itineraries.',
+  },
+  {
+    title: 'IATA Certified & BBSN Member',
+    description: 'Fully accredited ticketing desk and recognized British Boarding School advisory.',
+  },
+  {
+    title: 'Discreet & Verified Partners',
+    description: 'Only audited aviation operators, vetted tutors, and verified local hospitality teams.',
+  },
+];
+
+const SERVICE_OPTIONS = [
+  { value: 'Tickets', label: 'Tickets (Flight Bookings & Private Jets)' },
+  { value: 'Tours', label: 'Tours (Bespoke Travel & Escapes)' },
+  { value: 'Visa Assistance', label: 'Visa Assistance & Mobility' },
+  { value: 'School Placement', label: 'School Placement (UK & Global Education)' },
+  { value: 'Concierge Services', label: 'Concierge Services (Lifestyle Management)' },
+  { value: 'Something Else', label: 'Something Else / Multiple Services' },
+];
+
+const FOOTER_SERVICES = [
+  { label: 'Flight Tickets & Jets', href: '/tickets-and-aviation' },
+  { label: 'Curated Tours', href: '/curated-tours' },
+  { label: 'Visa Support Desk', href: '/visa-consultancy' },
+  { label: 'School Placement', href: '/school-placement' },
+  { label: 'VIP Lifestyle Concierge', href: '/concierge-lifestyle' },
+];
+
+const FOOTER_DESK = [
+  { label: 'Make an Enquiry', href: '#enquiry' },
+  { label: 'About QVC', href: '#trust' },
+  { label: 'Privacy Policy', href: '#' },
+  { label: 'Terms of Engagement', href: '#' },
+];
+
+const ArrowRightIcon = ({ className = 'w-4 h-4' }) => (
+  <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+  </svg>
+);
+
+const ArrowLongRightIcon = ({ className = 'w-4 h-4' }) => (
+  <svg aria-hidden="true" className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+  </svg>
+);
+
+const GlobeIcon = () => (
+  <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
+const ShieldCheckIcon = () => (
+  <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
+const StarIcon = () => (
+  <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+  </svg>
+);
+
+const CREDENTIALS = [
+  { label: 'Licensed IATA Agent', icon: <GlobeIcon />, tone: 'text-brand-blue' },
+  { label: 'BBSN Member Advisory', icon: <ShieldCheckIcon />, tone: 'text-brand-blue' },
+  { label: 'Discreet Personal Support', icon: <StarIcon />, tone: 'text-brand-gold' },
+];
+
+function ServiceCard({ service }) {
+  const cardClass = `${service.span} bg-white rounded-3xl p-7 border border-brand-border shadow-subtle hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between group`;
+
+  const kicker = (
+    <span className="text-xs font-bold text-brand-blue uppercase tracking-widest">
+      {service.number} / {service.category}
+    </span>
+  );
+
+  const discoverLink = (
+    <a
+      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-blue hover:text-brand-blueHover pt-2"
+      href={service.href}
+    >
+      <span>Discover More</span>
+      <span aria-hidden="true">&rarr;</span>
+    </a>
+  );
+
+  if (service.wide) {
+    return (
+      <div className={cardClass}>
+        <div className="flex flex-col sm:flex-row gap-6 items-start">
+          <div className="w-full sm:w-5/12 h-48 sm:h-56 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100">
+            <img
+              alt={service.alt}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              decoding="async"
+              loading="lazy"
+              src={service.image}
+            />
+          </div>
+          <div className="flex flex-col justify-between h-full">
+            <div>
+              {kicker}
+              <h3 className="text-xl sm:text-2xl font-bold text-brand-navy mt-1 mb-2">{service.title}</h3>
+              <p className="text-brand-slate text-sm leading-relaxed mb-4">{service.description}</p>
+            </div>
+            {discoverLink}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cardClass}>
+      <div>
+        <div className={`w-full ${service.imageHeight || 'h-44'} rounded-2xl overflow-hidden mb-5 bg-slate-100`}>
+          <img
+            alt={service.alt}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            decoding="async"
+            loading="lazy"
+            src={service.image}
+          />
+        </div>
+        {kicker}
+        <h3 className={`${service.titleSize || 'text-xl'} font-bold text-brand-navy mt-1 mb-2`}>{service.title}</h3>
+        <p className="text-brand-slate text-sm leading-relaxed mb-4">{service.description}</p>
+      </div>
+      {discoverLink}
+    </div>
+  );
+}
 
 export default function LandingPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHeroPaused, setIsHeroPaused] = useState(false);
-  const [openCards, setOpenCards] = useState({ school: true });
-  const [formStatus, setFormStatus] = useState('idle'); // 'idle' | 'submitting' | 'submitted'
+  const [enquirySent, setEnquirySent] = useState(false);
 
-  // Hero carousel auto-slide
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isHeroPaused) {
-        setCurrentSlide((prev) => (prev + 1) % 3);
-      }
-    }, 5500);
-    return () => clearInterval(timer);
-  }, [isHeroPaused]);
-
-  // 3D Tilt handler
-  const handleTiltMove = (e) => {
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
-    }
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((centerY - y) / centerY) * 5.5;
-    const rotateY = ((x - centerX) / centerX) * 5.5;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(
-      2
-    )}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.02) translateZ(10px)`;
-  };
-
-  const handleTiltLeave = (e) => {
-    e.currentTarget.style.transform = '';
-  };
-
-  // Toggle card expansion
-  const toggleCard = (cardId, e) => {
-    if (e) {
-      if (e.target.closest('a') && !e.target.closest('.card-expand-toggle')) {
-        return;
-      }
-    }
-    setOpenCards((prev) => ({
-      ...prev,
-      [cardId]: !prev[cardId],
-    }));
-  };
-
-  // Form submission handler
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setFormStatus('submitting');
-    setTimeout(() => {
-      setFormStatus('submitted');
-    }, 700);
-  };
-
-  const handleLogoError = (e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = '/logo.jpeg';
+  const handleEnquirySubmit = (event) => {
+    event.preventDefault();
+    setEnquirySent(true);
   };
 
   return (
-    <>
-      {/* HEADER */}
-      <header className="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-xl border-b border-outline shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
-        <div className="h-20 w-full px-margin md:px-space-xl lg:px-margin-desktop flex items-center justify-between">
-          <div className="flex items-center gap-space-sm">
+    <div className="bg-white text-brand-slateDark font-sans antialiased selection:bg-brand-blue selection:text-white">
+      {/* BEGIN: MainHeader */}
+      <header className="w-full sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-brand-border/80 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+          {/* Brand Logo Wordmark */}
+          <a className="flex items-center gap-3.5 group" href="#home">
             <img
-              alt="QVC-logo.jpg"
-              className="h-8 w-auto object-contain"
-              src={LOGO_URL}
-              onError={handleLogoError}
+              alt="QVC Concierge"
+              className="w-9 h-9 object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform duration-300"
+              src={LOGO_SRC}
             />
-            <a className="flex flex-col" data-path="home" href="/">
-              <span className="font-headline-sm text-headline-sm text-on-secondary-container leading-none font-bold tracking-tight">
-                QVC
-              </span>
-              <span className="font-label-md text-label-md uppercase text-primary font-semibold tracking-widest">
-                Concierge
-              </span>
-            </a>
-          </div>
-
-          <nav
-            className="hidden lg:flex items-center gap-space-lg"
-            data-active-classes="text-primary font-bold"
-          >
-            <a
-              aria-current="page"
-              className="transition-colors text-primary font-bold"
-              data-path="home"
-              href="/"
-            >
-              Home
-            </a>
-
-            <div className="relative group py-2">
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-sans text-xl font-extrabold tracking-tight text-brand-navy">QVC</span>
+              <span className="text-xs uppercase font-semibold tracking-[0.22em] text-brand-muted">Concierge</span>
+            </div>
+          </a>
+          {/* Primary Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-9 text-sm font-medium tracking-tight">
+            {NAV_LINKS.map((link) => (
               <a
-                className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs font-medium"
-                data-path="our-services"
-                href="#qvc-difference-section"
+                className={
+                  link.active
+                    ? 'text-brand-navy font-semibold hover:text-brand-blue transition-colors relative py-1'
+                    : 'text-brand-slate hover:text-brand-blue transition-colors py-1'
+                }
+                href={link.href}
+                key={link.label}
               >
-                <span>Our Services</span>
-                <span className="material-symbols-outlined text-[16px] text-on-surface-variant transition-transform duration-200 group-hover:rotate-180">
-                  expand_more
-                </span>
+                {link.label}
+                {link.active ? (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-brand-blue rounded-full" />
+                ) : null}
               </a>
-              <div className="absolute left-0 top-full hidden group-hover:flex flex-col w-64 bg-surface border border-outline p-space-sm shadow-[0_16px_40px_-12px_rgba(15,23,42,0.08)] z-50">
-                <a
-                  className="px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors"
-                  data-path="tickets"
-                  href="/tickets-and-aviation"
-                >
-                  Tickets &amp; Aviation
-                </a>
-                <a
-                  className="px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors"
-                  data-path="tours"
-                  href="/curated-tours"
-                >
-                  Curated Tours
-                </a>
-                <a
-                  className="px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors"
-                  data-path="visa-assistance"
-                  href="/visa-consultancy"
-                >
-                  Visa Assistance
-                </a>
-                <a
-                  className="px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors"
-                  data-path="school-placement"
-                  href="/school-placement"
-                >
-                  School Placement
-                </a>
-                <a
-                  className="px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors"
-                  data-path="concierge-services"
-                  href="/concierge-lifestyle"
-                >
-                  Concierge Services
-                </a>
-              </div>
-            </div>
-
-            <a
-              className="font-body-md text-body-md text-on-surface-variant hover:text-primary font-medium transition-colors"
-              data-path="about-qvc"
-              href="#qvc-difference-section"
-            >
-              About QVC
-            </a>
-            <a
-              className="font-body-md text-body-md text-on-surface-variant hover:text-primary font-medium transition-colors"
-              data-path="how-it-works"
-              href="#how-it-works"
-            >
-              How It Works
-            </a>
-            <a
-              className="font-body-md text-body-md text-on-surface-variant hover:text-primary font-medium transition-colors"
-              data-path="contact"
-              href="#enquiry-form"
-            >
-              Contact
-            </a>
+            ))}
           </nav>
-
-          <div className="flex items-center gap-space-md">
+          {/* Header Action Button */}
+          <div className="flex items-center">
             <a
-              className="hidden sm:inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-md py-space-xs transition-colors duration-200 hover:bg-primary shadow-sm"
-              data-path="make-an-enquiry"
-              href="#enquiry-form"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-blue text-white text-xs sm:text-sm font-semibold hover:bg-brand-blueHover shadow-glow-cobalt hover:shadow-lg transition-all duration-200 group"
+              href="#enquiry"
             >
-              <span className="flex items-center gap-space-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
-                <span>Make an Enquiry</span>
-              </span>
+              <span>Make an Enquiry</span>
+              <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline flex items-center justify-center text-primary">
-              <span className="material-symbols-outlined text-primary text-[18px]">
-                person
-              </span>
-            </div>
           </div>
         </div>
       </header>
+      {/* END: MainHeader */}
 
-      {/* MAIN CONTENT */}
-      <main className="w-full pt-20 bg-surface">
-        <div className="flex flex-col w-full">
-          {/* SECTION 1: EDITORIAL HERO CAROUSEL */}
-          <section
-            className="relative w-full h-[660px] lg:h-[720px] overflow-hidden bg-on-secondary-container text-on-primary selection:bg-primary-container selection:text-white"
-            id="hero-carousel-section"
-            onMouseEnter={() => setIsHeroPaused(true)}
-            onMouseLeave={() => setIsHeroPaused(false)}
-          >
-            {/* Carousel Track */}
-            <div className="relative w-full h-full" id="hero-slider">
-              {/* Slide 1: Travel Without the Stress */}
-              <div
-                className={`hero-slide absolute inset-0 w-full h-full ${
-                  currentSlide === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                } transition-opacity duration-1000 ease-out flex items-center`}
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 ease-linear scale-100"
-                  data-alt="Bespoke luxury aviation and serene travel destination spread. A Gulfstream G650 private jet parked quietly on an exclusive Mediterranean tarmac at golden hour twilight with warm honey light, deep maroon reflection on the cabin windows, and elegant minimalist tarmac architecture in warm ivory and deep wine undertones."
-                  style={{
-                    backgroundImage:
-                      "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBizvCcg6DvJdXImWGyHyKYEoA6-7iOUrjWZdHecQFlGMAb6bpBgWd311A_Lj8VwfM4fQUcW_1-GT3z70-Nx9dd9g6AFH13txQEQr0qMCQlEWKWeBbl6_NJDoPj0Wj_Rxn9BlLer9A8W0VmgvCEcXbzwvtyTEWqJI8hBvf0ThFdYlnmp8UctUi920433I5h2Ti622n_LtMI2RJUmxvUFuPV769HCfuLjd7Q8WFb3gqI0M9x1KCO91n8')",
-                  }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
-                <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
-                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
-                      <span className="w-8 h-px bg-primary-container"></span>
-                      <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
-                        Your Journey Starts Here
-                      </span>
-                      <span className="w-8 h-px bg-primary-container"></span>
-                    </div>
-                    <h1 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
-                      The world is yours to explore. We bring it all together.
-                    </h1>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
-                      From bespoke commercial tickets and private aviation to curated
-                      tours and discreet consular visas, find every travel service
-                      coordinated under one private roof.
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-space-md">
-                      <a
-                        className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
-                        data-path="tickets"
-                        href="/tickets-and-aviation"
-                      >
-                        <span>Explore Travel Services</span>
-                      </a>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-body-md text-body-md text-secondary-fixed hover:text-surface transition-colors py-space-xs group"
-                        data-path="tours"
-                        href="/curated-tours"
-                      >
-                        <span className="border-b border-secondary-fixed/50 pb-0.5 group-hover:border-surface">
-                          Plan your next journey
-                        </span>
-                        <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Slide 2: Education and New Opportunities */}
-              <div
-                className={`hero-slide absolute inset-0 w-full h-full ${
-                  currentSlide === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                } transition-opacity duration-1000 ease-out flex items-center`}
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 ease-linear scale-100"
-                  data-alt="Historic collegiate quadrangle architecture in Oxford or Cambridge during late autumn afternoon, golden sun filtering through ancient stone arches, an impeccably dressed African scholar carrying a leather portfolio in quiet contemplation, warm ochre leaves, high fashion editorial tone with rich burgundy and ivory grading."
-                  style={{
-                    backgroundImage:
-                      "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB1T9VUlHkC4GsWMXGalIUI7eSA6Fu-UdMVHrC-5IGUDLu0gMH5HkPUctCqZ7KfyiA716mpRt3SwEa5DtzsTnxkOA31VoUh3EuN8UaxDYhaVW5amBtj3y8MJ6sNlPpIoljeKGHRgND2Utog4_X1kLSwCHLW7xh7OuoxUHV3t37sm7tdxYHaUyjxWgz5O_jzFykjxpWuBC8KZ54r5BoFMV0Bat0I-p4DejNqdFdsXyLQNRQIfb1wh39_')",
-                  }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
-                <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
-                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
-                      <span className="w-8 h-px bg-primary-container"></span>
-                      <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
-                        Your Next Chapter
-                      </span>
-                      <span className="w-8 h-px bg-primary-container"></span>
-                    </div>
-                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
-                      Big dreams deserve a simpler way forward.
-                    </h2>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
-                      Explore premier British and North American school placement support
-                      with vetted advisors navigating every dossier, interview, and
-                      matriculation milestone.
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-space-md">
-                      <a
-                        className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
-                        data-path="school-placement"
-                        href="/school-placement"
-                      >
-                        <span>Explore School Placement</span>
-                      </a>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-body-md text-body-md text-secondary-fixed hover:text-surface transition-colors py-space-xs group"
-                        data-path="contact"
-                        href="#enquiry-form"
-                      >
-                        <span className="border-b border-secondary-fixed/50 pb-0.5 group-hover:border-surface">
-                          Start your application journey
-                        </span>
-                        <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Slide 3: Life, Handled Better */}
-              <div
-                className={`hero-slide absolute inset-0 w-full h-full ${
-                  currentSlide === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                } transition-opacity duration-1000 ease-out flex items-center`}
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 ease-linear scale-100"
-                  data-alt="High-end private concierge dining setting on a luxury penthouse balcony overlooking Lake Como at dusk. Crystal glassware, bespoke linen, subtle candlelight illuminating fine silverware and tailored personal concierge liaison placing handwritten place cards, subdued wine red velvet accents and soft warm ambient glow."
-                  style={{
-                    backgroundImage:
-                      "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvBGt4sJsODUQbMgHKY5dIwP2mR8wBTSjg_Za28jLjAehf0_-BZHsm8ou8f_ttRunxvH2JUExyMRWNLbi_14hVzcY-m8Ti8FUYuYrgcOlTt4gXMTosuWIyyya3C1MoJegD6_dIJ4uE7JFdlxYs8D2VNWI28TagwprU1sf1u6JW1EnqE4Nd4ZgYVq1ZpjpiNQCSPx0Bwt4v76XUKUzlMSNJ1sBShhIZOQW8USMzaRxFJLDTSzYZoKLB')",
-                  }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40"></div>
-                <div className="relative z-20 w-full px-margin md:px-space-xl lg:px-margin-desktop">
-                  <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
-                    <div className="flex items-center justify-center gap-space-sm mb-space-sm">
-                      <span className="w-8 h-px bg-primary-container"></span>
-                      <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
-                        More Time For What Matters
-                      </span>
-                      <span className="w-8 h-px bg-primary-container"></span>
-                    </div>
-                    <h2 className="font-display text-display-sm lg:text-display text-surface leading-[1.15] mb-space-md font-bold text-center">
-                      Tell us what you need. Consider it taken care of.
-                    </h2>
-                    <p className="font-body-lg text-body-lg text-slate-200 max-w-xl mx-auto mb-space-lg font-normal leading-relaxed text-center">
-                      From confidential personal errands and bespoke lifestyle requests to
-                      VIP arrivals, QVC coordinates the nuanced friction points that elevate
-                      everyday living.
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-space-md">
-                      <a
-                        className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-wider px-space-lg py-space-sm shadow-xl hover:bg-primary transition-all duration-300"
-                        data-path="concierge-services"
-                        href="/concierge-lifestyle"
-                      >
-                        <span>Discover Concierge</span>
-                      </a>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-body-md text-body-md text-secondary-fixed hover:text-surface transition-colors py-space-xs group"
-                        data-path="make-an-enquiry"
-                        href="#enquiry-form"
-                      >
-                        <span className="border-b border-secondary-fixed/50 pb-0.5 group-hover:border-surface">
-                          Let's make it happen
-                        </span>
-                        <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 2: ONE-STOP-SHOP INTRODUCTION (THE QVC DIFFERENCE) */}
-          <section
-            className="w-full py-space-xl px-margin md:px-space-xl lg:px-margin-desktop bg-surface perspective-container"
-            id="qvc-difference-section"
-          >
-            {/* Header Narrative */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-end mb-space-xl">
-              <div className="lg:col-span-7 flex flex-col">
-                <span className="font-label-lg text-label-lg uppercase tracking-[0.2em] text-primary mb-space-xs font-semibold">
-                  The QVC Difference
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-secondary-container leading-tight">
-                  Five ways we make life easier.
-                  <br className="hidden sm:inline" /> One place to start.
-                </h2>
-              </div>
-              <div className="lg:col-span-5 flex flex-col">
-                <p className="font-body-md text-body-md text-secondary font-normal leading-relaxed">
-                  Travel, education, and lifestyle governance brought together with
-                  singular composure. Select or click any service card to view its bespoke
-                  dossier, operational scope, and curated liaisons.
-                </p>
+      <main id="home">
+        {/* BEGIN: HeroSection */}
+        <section className="relative pt-12 pb-16 lg:pt-16 lg:pb-24 overflow-hidden bg-gradient-to-b from-[#FAFBFD] via-[#F8FAFC] to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Headline & Supporting Text */}
+            <div className="text-center max-w-4xl mx-auto mb-10 lg:mb-14">
+              <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-brand-blue font-bold mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-blue" />
+                Travel &bull; Education &bull; Lifestyle
+              </p>
+              <h1 className="text-4xl sm:text-6xl lg:text-[68px] font-extrabold tracking-tight leading-[1.08] mb-5 font-sans">
+                <span className="text-brand-obsidian block">Whatever Life Takes You To.</span>
+                <span className="text-brand-blue block">We&apos;ll Help You Get There.</span>
+              </h1>
+              <p className="text-brand-slate text-base sm:text-lg font-normal max-w-2xl mx-auto leading-relaxed mb-8">
+                From journeys and new opportunities to life&apos;s important details, discover services and personalised
+                support in one convenient place.
+              </p>
+              {/* Dual Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <a
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-brand-blue text-white text-sm sm:text-base font-semibold shadow-glow-cobalt hover:bg-brand-blueHover hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  href="#services"
+                >
+                  <span>Explore Our Services</span>
+                  <ArrowLongRightIcon />
+                </a>
+                <a
+                  className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-white text-brand-navy text-sm sm:text-base font-semibold border border-brand-border hover:border-slate-300 hover:bg-brand-mist/50 transition-all duration-200 shadow-sm"
+                  href="#enquiry"
+                >
+                  <span>Make an Enquiry</span>
+                </a>
               </div>
             </div>
 
-            {/* Dynamic Motion Bento Grid Cluster */}
-            <div className="cards-cluster flex flex-col gap-gutter-desktop">
-              {/* Top Row Asymmetric Pair (Service 1 & Stacked 2, 3) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-stretch">
-                {/* Service 1: Hero Large Featured (School Placement & Education) */}
-                <div
-                  className={`interactive-service-card animate-float-1 lg:col-span-7 bg-surface p-space-lg flex flex-col justify-between border border-outline hover:border-primary/60 shadow-sm relative group cursor-pointer ${
-                    openCards.school ? 'is-active' : ''
-                  }`}
-                  data-service-id="school"
-                  data-tilt=""
-                  onMouseMove={handleTiltMove}
-                  onMouseLeave={handleTiltLeave}
-                  onClick={(e) => toggleCard('school', e)}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-space-md">
-                      <span className="font-label-md text-label-md uppercase tracking-widest text-primary px-space-xs py-1 bg-surface-container-low border border-outline">
-                        01 • Education Portfolio
+            {/* DISTINCTIVE SERVICE WORD-ART COMPOSITION (Editorial Live Typography, No Boxes/Pills) */}
+            <div className="relative max-w-6xl mx-auto mt-6 lg:mt-10">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-4 lg:min-h-[620px] xl:gap-8">
+                {/* Central Focal Anchor: Architectural Editorial Masking */}
+                <div className="order-1 lg:order-2 relative z-20 flex flex-col items-center">
+                  <div className="relative w-64 sm:w-72 md:w-80 lg:w-[350px] aspect-[4/5] rounded-[28px] overflow-hidden shadow-editorial-image transition-all duration-700 hover:scale-[1.01] bg-slate-100">
+                    <img
+                      alt="Discreet traveler with refined luggage at private terminal"
+                      className="w-full h-full object-cover object-center"
+                      src={IMAGES.heroPortrait}
+                    />
+                    {/* Architectural Editorial Gradient Veil */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 via-transparent to-transparent pointer-events-none" />
+                    {/* Discreet Inset Editorial Caption */}
+                    <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white select-none">
+                      <span className="text-xs font-semibold tracking-wider uppercase text-white/95 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-blue" />
+                        Bespoke Coordination
                       </span>
-                      <div className="flex items-center gap-space-xs">
-                        <span className="font-label-md text-label-md uppercase tracking-widest text-secondary font-bold">
-                          BBSN Certified
-                        </span>
-                        <button
-                          aria-label="Toggle preview"
-                          className="card-expand-toggle w-6 h-6 rounded-full flex items-center justify-center bg-surface-container-low text-primary hover:bg-primary hover:text-white transition-colors ml-1"
-                          type="button"
-                        >
-                          <span className="material-symbols-outlined text-[16px] transition-transform duration-300">
-                            {openCards.school ? 'expand_less' : 'expand_more'}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface mb-space-sm group-hover:text-primary transition-colors font-bold">
-                      School Placement
-                    </h3>
-                    <p className="font-body-md text-body-md text-secondary max-w-lg mb-space-md leading-relaxed">
-                      Personalised advisement for distinguished UK, US, and Swiss boarding
-                      academies, A-level Sixth Forms, and global collegiate admissions. We
-                      manage student dossiers, entrance exams, and parent campus tours.
-                    </p>
-                  </div>
-
-                  {/* Contextual Expandable Image Panel */}
-                  <div
-                    className={`service-expand-panel w-full overflow-hidden transition-all duration-500 ${
-                      openCards.school
-                        ? 'max-h-[500px] opacity-100'
-                        : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <div className="w-full h-64 md:h-80 overflow-hidden mb-space-md bg-surface-container-low border border-outline relative group/img">
-                      <div
-                        className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                        data-alt="High-contrast editorial capture of an elite English country boarding school with ivy-clad stone architecture, landscaped emerald lawns, morning mist, and warm light glowing through historic leaded library windows in soft ivory and muted wine tone."
-                        style={{
-                          backgroundImage:
-                            "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZXgY4p2HP8Zz4rlSi9yPjtzzKg8AAqxV9b9jsKjh0RTbqLLGANboBtxI3wlgqKDMo1VZ1JJG-DioQZAW8tDXuYnwqLcLWm8-ZTQnoXRGQfMn7H1xKUlLCFnVLVZADJ07dJ8rmpD_6SH2PzUkAAqkQTj1pIXvj_10u8PCFIewqH0cra9CIIfL5PdXWwhsCA3B48eRPrG4kUxkm5bbn2n9IuSXLt28mphMtAFqEMS9AALBW2GHeMh97')",
-                        }}
-                      ></div>
-                      <div className="absolute bottom-2 left-2 bg-on-secondary-container/80 backdrop-blur-md px-2.5 py-1 text-white font-label-md text-label-md uppercase tracking-wider flex items-center gap-1.5 border border-white/10">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        <span>Eton • Harrow • Le Rosey Network</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between pt-space-xs">
-                      <span className="font-body-sm text-body-sm text-on-surface-variant">
-                        Matriculation Cohort 2025/26 Now Open
-                      </span>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase tracking-wider text-primary group-hover:text-primary-container transition-colors font-semibold"
-                        data-path="school-placement"
-                        href="/school-placement"
-                      >
-                        <span className="border-b border-primary pb-0.5">
-                          Explore Education
-                        </span>
-                        <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
-                          arrow_forward
-                        </span>
-                      </a>
+                      <span className="text-[11px] text-white/80 font-medium tracking-wide">Worldwide Access</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Service 2 & 3: Right Stack */}
-                <div className="lg:col-span-5 flex flex-col gap-gutter-desktop">
-                  {/* Service 2: Flight Tickets & Private Aviation */}
-                  <div
-                    className={`interactive-service-card animate-float-2 bg-surface-container-low p-space-md flex flex-col justify-between border border-outline hover:border-primary/60 group shadow-sm cursor-pointer ${
-                      openCards.tickets ? 'is-active' : ''
-                    }`}
-                    data-service-id="tickets"
-                    data-tilt=""
-                    onMouseMove={handleTiltMove}
-                    onMouseLeave={handleTiltLeave}
-                    onClick={(e) => toggleCard('tickets', e)}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-space-xs">
-                        <span className="font-label-md text-label-md uppercase tracking-widest text-primary font-semibold">
-                          02 • Aviation &amp; Airfare
-                        </span>
-                        <div className="flex items-center gap-space-xs">
-                          <span className="material-symbols-outlined text-primary group-hover:translate-x-0.5 transition-transform">
-                            flight_takeoff
-                          </span>
-                          <button
-                            aria-label="Toggle preview"
-                            className="card-expand-toggle w-6 h-6 rounded-full flex items-center justify-center bg-surface border border-outline text-primary hover:bg-primary hover:text-white transition-colors ml-1"
-                            type="button"
-                          >
-                            <span className="material-symbols-outlined text-[16px] transition-transform duration-300">
-                              {openCards.tickets ? 'expand_less' : 'expand_more'}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                      <h4 className="font-headline-sm text-headline-sm text-on-secondary-container mb-space-xs font-semibold group-hover:text-primary transition-colors">
-                        Tickets &amp; Aviation
-                      </h4>
-                      <p className="font-body-sm text-body-sm text-secondary mb-space-sm leading-relaxed">
-                        Commercial premium cabins, priority waitlist clearance, and ad-hoc
-                        private jet charters across West Africa, Europe, and the Middle East
-                        with zero friction.
-                      </p>
-                    </div>
-
-                    {/* Contextual Expandable Image Panel */}
-                    <div
-                      className={`service-expand-panel w-full overflow-hidden transition-all duration-500 ${
-                        openCards.tickets
-                          ? 'max-h-[500px] opacity-100'
-                          : 'max-h-0 opacity-0'
-                      }`}
-                    >
-                      <div className="w-full h-44 overflow-hidden mb-space-sm bg-surface border border-outline relative">
-                        <div
-                          className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                          data-alt="Luxurious private jet cabin interior and bespoke aviation tarmac lounge scene, hand-stitched leather seating, mahogany fold-out table with champagne glass, warm golden hour runway twilight."
-                          style={{
-                            backgroundImage:
-                              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBizvCcg6DvJdXImWGyHyKYEoA6-7iOUrjWZdHecQFlGMAb6bpBgWd311A_Lj8VwfM4fQUcW_1-GT3z70-Nx9dd9g6AFH13txQEQr0qMCQlEWKWeBbl6_NJDoPj0Wj_Rxn9BlLer9A8W0VmgvCEcXbzwvtyTEWqJI8hBvf0ThFdYlnmp8UctUi920433I5h2Ti622n_LtMI2RJUmxvUFuPV769HCfuLjd7Q8WFb3gqI0M9x1KCO91n8')",
-                          }}
-                        ></div>
-                        <div className="absolute bottom-2 left-2 bg-on-secondary-container/85 backdrop-blur-md px-2 py-0.5 text-white font-label-md text-label-md uppercase tracking-wider flex items-center gap-1 border border-white/10">
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                          <span>Gulfstream &amp; Falcon Charters</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-space-xs border-t border-outline">
-                      <span className="font-label-md text-label-md uppercase text-on-surface-variant">
-                        IATA Accredited
-                      </span>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase text-primary hover:text-on-secondary-container transition-colors font-semibold"
-                        data-path="tickets"
-                        href="/tickets-and-aviation"
-                      >
-                        <span>Explore Tickets</span>
-                        <span className="material-symbols-outlined text-[14px]">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
+                {/* Left Column Typographic Word-Art Flow */}
+                <div className="order-2 lg:order-1 z-10 flex h-full flex-col justify-between gap-10 lg:gap-0 lg:py-10 pointer-events-none select-none">
+                  {/* Top Left Cluster */}
+                  <div className="text-left space-y-1 pl-2 sm:pl-6 lg:pl-4 xl:pl-8">
+                    <span className="block text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-brand-obsidian">
+                      Travel
+                    </span>
+                    <span className="block text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase text-brand-blue">
+                      Tickets &amp; Aviation
+                    </span>
+                    <span className="block text-[11px] sm:text-xs uppercase tracking-[0.28em] text-slate-400 font-medium pt-1">
+                      Getaways
+                    </span>
                   </div>
-
-                  {/* Service 3: Curated Tours */}
-                  <div
-                    className={`interactive-service-card animate-float-3 bg-surface p-space-md flex flex-col justify-between border border-outline hover:border-primary/60 shadow-sm group cursor-pointer ${
-                      openCards.tours ? 'is-active' : ''
-                    }`}
-                    data-service-id="tours"
-                    data-tilt=""
-                    onMouseMove={handleTiltMove}
-                    onMouseLeave={handleTiltLeave}
-                    onClick={(e) => toggleCard('tours', e)}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-space-xs">
-                        <span className="font-label-md text-label-md uppercase tracking-widest text-primary font-semibold">
-                          03 • Curated Expeditions
-                        </span>
-                        <div className="flex items-center gap-space-xs">
-                          <span className="material-symbols-outlined text-primary group-hover:translate-x-0.5 transition-transform">
-                            travel_explore
-                          </span>
-                          <button
-                            aria-label="Toggle preview"
-                            className="card-expand-toggle w-6 h-6 rounded-full flex items-center justify-center bg-surface-container-low border border-outline text-primary hover:bg-primary hover:text-white transition-colors ml-1"
-                            type="button"
-                          >
-                            <span className="material-symbols-outlined text-[16px] transition-transform duration-300">
-                              {openCards.tours ? 'expand_less' : 'expand_more'}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                      <h4 className="font-headline-sm text-headline-sm text-on-secondary-container mb-space-xs font-semibold group-hover:text-primary transition-colors">
-                        Curated Tours
-                      </h4>
-                      <p className="font-body-sm text-body-sm text-secondary mb-space-sm leading-relaxed">
-                        Artfully designed holiday retreats, private safari charters in the
-                        Serengeti, and seasonal cultural escapes curated exclusively
-                        around your group's privacy.
-                      </p>
-                    </div>
-
-                    {/* Contextual Expandable Image Panel */}
-                    <div
-                      className={`service-expand-panel w-full overflow-hidden transition-all duration-500 ${
-                        openCards.tours
-                          ? 'max-h-[500px] opacity-100'
-                          : 'max-h-0 opacity-0'
-                      }`}
-                    >
-                      <div className="w-full h-44 overflow-hidden mb-space-sm bg-surface-container-low border border-outline relative">
-                        <img
-                          alt="Cinematic luxury yacht moored in a private Mediterranean cove with exclusive coastal villa"
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                          src="https://lh3.googleusercontent.com/aida/AEtjO1Xm5oJ9_mg0qInsNuFRbcB1alrPNIOg_t923_L2HZkr5kidoqQuMJ5cdgAGnYPKf1s62KIwbOn-ZUeEC2UEDeAbJN_uf6DOfTh3IIs8vMu_Ppcixqs1UdYSfu0oMixQTFpoF07NQeWSDvwtrpyxS6eCKAHAJseoOoWmJNl9bG94WFKO1dEUoEfHTzp_nQZSGINkqnB_GWJWWaogdSUvzrvXF26uTum_sE6l90ns-0Np9bej-BW2XGEe_vE"
-                        />
-                        <div className="absolute bottom-2 left-2 bg-on-secondary-container/85 backdrop-blur-md px-2 py-0.5 text-white font-label-md text-label-md uppercase tracking-wider flex items-center gap-1 border border-white/10">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
-                          <span>Bespoke Yacht &amp; Villa Charters</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-space-xs border-t border-outline">
-                      <span className="font-label-md text-label-md uppercase text-on-surface-variant">
-                        Private Access Only
-                      </span>
-                      <a
-                        className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase text-primary hover:text-on-secondary-container transition-colors font-semibold"
-                        data-path="tours"
-                        href="/curated-tours"
-                      >
-                        <span>Explore Tours</span>
-                        <span className="material-symbols-outlined text-[14px]">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
+                  {/* Mid Left Cluster */}
+                  <div className="text-left space-y-1.5 pl-4 sm:pl-10 lg:pl-8 xl:pl-12">
+                    <span className="block text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-brand-navy">
+                      Tours &amp; Escapes
+                    </span>
+                    <span className="block text-sm sm:text-base font-medium tracking-wide text-brand-slate">
+                      Curated Itineraries
+                    </span>
+                    <span className="block text-lg sm:text-xl font-bold tracking-tight text-slate-300">Experiences</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Bottom Asymmetric Pair (Service 4 & Service 5) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-stretch">
-                {/* Service 4: Visa Assistance */}
-                <div
-                  className={`interactive-service-card animate-float-4 lg:col-span-5 bg-surface p-space-lg flex flex-col justify-between border border-outline hover:border-primary/60 shadow-sm group cursor-pointer ${
-                    openCards.visa ? 'is-active' : ''
-                  }`}
-                  data-service-id="visa"
-                  data-tilt=""
-                  onMouseMove={handleTiltMove}
-                  onMouseLeave={handleTiltLeave}
-                  onClick={(e) => toggleCard('visa', e)}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-space-sm">
-                      <span className="font-label-md text-label-md uppercase tracking-widest text-primary font-semibold">
-                        04 • Consular Affairs
-                      </span>
-                      <div className="flex items-center gap-space-xs">
-                        <span className="material-symbols-outlined text-primary group-hover:text-primary-container transition-colors">
-                          verified_user
-                        </span>
-                        <button
-                          aria-label="Toggle preview"
-                          className="card-expand-toggle w-6 h-6 rounded-full flex items-center justify-center bg-surface-container-low border border-outline text-primary hover:bg-primary hover:text-white transition-colors ml-1"
-                          type="button"
-                        >
-                          <span className="material-symbols-outlined text-[16px] transition-transform duration-300">
-                            {openCards.visa ? 'expand_less' : 'expand_more'}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <h4 className="font-headline-md text-headline-md text-on-secondary-container mb-space-xs font-semibold group-hover:text-primary transition-colors">
+                  {/* Bottom Left Cluster */}
+                  <div className="text-left space-y-1 pl-2 sm:pl-6 xl:pl-10">
+                    <span className="block text-xs sm:text-sm uppercase tracking-[0.22em] text-brand-blue font-semibold">
+                      Global Mobility
+                    </span>
+                    <span className="block text-2xl sm:text-3xl xl:text-4xl font-extrabold tracking-tight text-brand-obsidian">
                       Visa Assistance
-                    </h4>
-                    <p className="font-body-md text-body-md text-secondary leading-relaxed mb-space-md">
-                      Meticulous file preparation, expedited biometrics appointment
-                      booking, and strategic consular advice for UK, Schengen, US, and
-                      Canadian visitor and student permits.
-                    </p>
-                  </div>
-
-                  {/* Contextual Expandable Image Panel */}
-                  <div
-                    className={`service-expand-panel w-full overflow-hidden transition-all duration-500 ${
-                      openCards.visa
-                        ? 'max-h-[500px] opacity-100'
-                        : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <div className="w-full h-52 overflow-hidden mb-space-md bg-surface-container-low border border-outline relative">
-                      <div
-                        className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                        data-alt="Refined diplomatic leather passport case, consular documentation dossier, and first-class VIP terminal boarding lounge with warm ivory and rich navy accents."
-                        style={{
-                          backgroundImage:
-                            "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4xaHO76YHSjoXqaHzNhJRB1mKE1YlqBGumWMtQBGcJuAxZgFhFp8wjjkmwTVFSXFJ8JWu4yWBXMOl46ZVxtxwH7eViDcjfIde2uVvWqte54YNLgaWDcxELBxR3CcU1KgBAMmVmHKrsWK9epsCu61aG8k7vY1XpnB3NlhlPIbayqM6KfGlw3U-MB5n_6IhbS61voHsHnO6qUEGgCKQrl0WeBXe8GnuBsc7BPaTsm8iBdvZy-WgAYvY')",
-                        }}
-                      ></div>
-                      <div className="absolute bottom-2 left-2 bg-on-secondary-container/85 backdrop-blur-md px-2.5 py-1 text-white font-label-md text-label-md uppercase tracking-wider flex items-center gap-1.5 border border-white/10">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        <span>Expedited Biometrics &amp; Schengen Protocol</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-space-md border-t border-outline flex items-center justify-between">
-                    <span className="font-label-md text-label-md uppercase text-on-surface-variant">
-                      98.4% First-Pass Acceptance
                     </span>
-                    <a
-                      className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase text-primary hover:text-on-secondary-container transition-colors font-semibold"
-                      data-path="visa-assistance"
-                      href="/visa-consultancy"
-                    >
-                      <span>Explore Visa Services</span>
-                      <span className="material-symbols-outlined text-[14px]">
-                        arrow_forward
-                      </span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Service 5: Concierge Services */}
-                <div
-                  className={`interactive-service-card animate-float-5 lg:col-span-7 bg-on-secondary-container text-on-primary p-space-lg flex flex-col justify-between relative overflow-hidden group border border-slate-900 hover:border-primary-fixed shadow-sm cursor-pointer ${
-                    openCards.concierge ? 'is-active' : ''
-                  }`}
-                  data-service-id="concierge"
-                  data-tilt=""
-                  onMouseMove={handleTiltMove}
-                  onMouseLeave={handleTiltLeave}
-                  onClick={(e) => toggleCard('concierge', e)}
-                >
-                  <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-primary-container/30 rounded-full blur-3xl pointer-events-none transition-transform duration-500 group-hover:scale-125"></div>
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-space-sm">
-                      <span className="font-label-lg text-label-lg uppercase tracking-widest text-primary-fixed-dim font-semibold">
-                        05 • Lifestyle Liaison
-                      </span>
-                      <div className="flex items-center gap-space-xs">
-                        <span className="px-space-xs py-0.5 bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider font-semibold">
-                          White Glove
-                        </span>
-                        <button
-                          aria-label="Toggle preview"
-                          className="card-expand-toggle w-6 h-6 rounded-full flex items-center justify-center bg-slate-800 border border-slate-700 text-primary-fixed-dim hover:bg-primary-container hover:text-white transition-colors ml-1"
-                          type="button"
-                        >
-                          <span className="material-symbols-outlined text-[16px] transition-transform duration-300">
-                            {openCards.concierge ? 'expand_less' : 'expand_more'}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <h4 className="font-headline-md text-headline-md text-surface mb-space-xs font-bold group-hover:text-primary-fixed-dim transition-colors">
-                      Concierge Services
-                    </h4>
-                    <p className="font-body-md text-body-md text-slate-300 max-w-lg leading-relaxed mb-space-md">
-                      Personalised, discretion-first coordination for high-value requests:
-                      private villa buyouts, chauffeur dispatch in global capitals, VIP
-                      airport tarmac protocol, and hard-to-source reservations.
-                    </p>
-                  </div>
-
-                  {/* Contextual Expandable Image Panel */}
-                  <div
-                    className={`service-expand-panel relative z-10 w-full overflow-hidden transition-all duration-500 ${
-                      openCards.concierge
-                        ? 'max-h-[500px] opacity-100'
-                        : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <div className="w-full h-56 md:h-64 overflow-hidden mb-space-md bg-slate-950/60 border border-slate-800 relative">
-                      <div
-                        className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                        data-alt="High-end private penthouse balcony dining suite overlooking Lake Como with candlelight, fine silverware, personal butler hospitality liaison and luxury bespoke lifestyle ambiance."
-                        style={{
-                          backgroundImage:
-                            "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvBGt4sJsODUQbMgHKY5dIwP2mR8wBTSjg_Za28jLjAehf0_-BZHsm8ou8f_ttRunxvH2JUExyMRWNLbi_14hVzcY-m8Ti8FUYuYrgcOlTt4gXMTosuWIyyya3C1MoJegD6_dIJ4uE7JFdlxYs8D2VNWI28TagwprU1sf1u6JW1EnqE4Nd4ZgYVq1ZpjpiNQCSPx0Bwt4v76XUKUzlMSNJ1sBShhIZOQW8USMzaRxFJLDTSzYZoKLB')",
-                        }}
-                      ></div>
-                      <div className="absolute bottom-2 left-2 bg-slate-950/85 backdrop-blur-md px-2.5 py-1 text-white font-label-md text-label-md uppercase tracking-wider flex items-center gap-1.5 border border-white/10">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Private Chauffeur • VIP Tarmac • Bespoke Suites</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative z-10 pt-space-md border-t border-slate-800 flex items-center justify-between">
-                    <span className="font-label-md text-label-md uppercase text-slate-400">
-                      24/7 Dedicated Account Desk
-                    </span>
-                    <a
-                      className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase text-primary-fixed-dim hover:text-surface transition-colors font-semibold"
-                      data-path="concierge-services"
-                      href="/concierge-lifestyle"
-                    >
-                      <span>Explore Concierge</span>
-                      <span className="material-symbols-outlined text-[14px]">
-                        arrow_forward
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 3: HOW IT WORKS (3-STEP PROCESS) */}
-          <section
-            className="w-full py-space-xl px-margin md:px-space-xl lg:px-margin-desktop bg-surface-container-low border-y border-outline"
-            id="how-it-works"
-          >
-            <div className="max-w-4xl mx-auto text-center mb-space-xl flex flex-col items-center">
-              <span className="font-label-lg text-label-lg uppercase tracking-[0.2em] text-primary mb-space-xs font-semibold">
-                Structured Clarity
-              </span>
-              <h2 className="font-headline-lg text-headline-lg text-on-secondary-container mb-space-sm font-bold">
-                You choose. We coordinate. You move forward.
-              </h2>
-              <p className="font-body-lg text-body-lg text-secondary max-w-2xl font-normal">
-                No automated bots or unassisted checkouts. We replace impersonal web
-                forms with a dedicated human liaison who absorbs your preferences and
-                manages every variable.
-              </p>
-            </div>
-
-            {/* 3 Step Horizontal Editorial Spread */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter-desktop relative">
-              {/* Step 1 */}
-              <div className="bg-surface p-space-lg flex flex-col relative border border-outline shadow-sm">
-                <div className="flex items-center justify-between mb-space-md">
-                  <span className="font-display text-headline-lg text-primary font-bold leading-none">
-                    01
-                  </span>
-                  <span className="material-symbols-outlined text-primary text-[22px]">
-                    category
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-semibold">
-                  Choose Your Service
-                </h3>
-                <p className="font-body-md text-body-md text-secondary leading-relaxed mb-space-md flex-grow">
-                  Explore our private portfolio and determine the primary area where you
-                  need guidance—from urgent flights to term-long education strategies.
-                </p>
-                <div className="w-full h-1 bg-surface-container-low">
-                  <div className="w-1/3 h-full bg-primary-container"></div>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="bg-surface p-space-lg flex flex-col relative border border-outline shadow-sm">
-                <div className="flex items-center justify-between mb-space-md">
-                  <span className="font-display text-headline-lg text-primary font-bold leading-none">
-                    02
-                  </span>
-                  <span className="material-symbols-outlined text-primary text-[22px]">
-                    edit_note
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-semibold">
-                  Tell Us What You Need
-                </h3>
-                <p className="font-body-md text-body-md text-secondary leading-relaxed mb-space-md flex-grow">
-                  Provide your core dates, destinations, or specific requirements through
-                  our encrypted briefing desk or a quick voice note via WhatsApp.
-                </p>
-                <div className="w-full h-1 bg-surface-container-low">
-                  <div className="w-2/3 h-full bg-primary-container"></div>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="bg-surface p-space-lg flex flex-col relative border border-outline shadow-sm">
-                <div className="flex items-center justify-between mb-space-md">
-                  <span className="font-display text-headline-lg text-primary font-bold leading-none">
-                    03
-                  </span>
-                  <span className="material-symbols-outlined text-primary text-[22px]">
-                    verified
-                  </span>
-                </div>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-semibold">
-                  We Take It From Here
-                </h3>
-                <p className="font-body-md text-body-md text-secondary leading-relaxed mb-space-md flex-grow">
-                  Your designated concierge verifies feasibility, negotiates rates with
-                  partners, presents tailored itineraries, and completes every booking.
-                </p>
-                <div className="w-full h-1 bg-surface-container-low">
-                  <div className="w-full h-full bg-primary-container"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA centered */}
-            <div className="mt-space-xl flex justify-center">
-              <a
-                className="inline-flex items-center justify-center bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-widest px-space-xl py-space-sm shadow-md hover:bg-primary transition-colors font-semibold"
-                href="#enquiry-form"
-              >
-                <span>Start an Enquiry</span>
-              </a>
-            </div>
-          </section>
-
-          {/* SECTION 4: A PERSONAL APPROACH */}
-          <section className="w-full py-space-xl px-margin md:px-space-xl lg:px-margin-desktop bg-surface overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-center">
-              {/* Artful Asymmetric Image Collage */}
-              <div className="lg:col-span-6 relative">
-                <div className="w-full h-[480px] bg-surface-container-low relative overflow-hidden border border-outline">
-                  <div
-                    className="w-full h-full bg-cover bg-center"
-                    data-alt="An elegant, confident African lifestyle concierge advisor in a sharply tailored charcoal blazer reviewing travel itineraries in an art-filled London or Lagos private club lounge with warm mahogany paneling, soft ivory lighting, and delicate gold accents."
-                    style={{
-                      backgroundImage:
-                        "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4xaHO76YHSjoXqaHzNhJRB1mKE1YlqBGumWMtQBGcJuAxZgFhFp8wjjkmwTVFSXFJ8JWu4yWBXMOl46ZVxtxwH7eViDcjfIde2uVvWqte54YNLgaWDcxELBxR3CcU1KgBAMmVmHKrsWK9epsCu61aG8k7vY1XpnB3NlhlPIbayqM6KfGlw3U-MB5n_6IhbS61voHsHnO6qUEGgCKQrl0WeBXe8GnuBsc7BPaTsm8iBdvZy-WgAYvY')",
-                    }}
-                  ></div>
-                </div>
-                {/* Overlapping floating reassurance dossier badge */}
-                <div className="absolute -bottom-6 -right-4 md:right-8 bg-surface p-space-md shadow-[0_16px_40px_-12px_rgba(15,23,42,0.1)] max-w-xs border-l-4 border-primary border-y border-r border-outline">
-                  <div className="flex items-center gap-space-xs mb-1">
-                    <span className="material-symbols-outlined text-primary text-[20px]">
-                      lock
-                    </span>
-                    <span className="font-label-md text-label-md uppercase tracking-wider text-on-secondary-container font-semibold">
-                      Confidentiality Guarantee
+                    <span className="block text-xs sm:text-sm font-medium text-slate-500">
+                      Expedited Consular Pathways
                     </span>
                   </div>
-                  <p className="font-body-sm text-body-sm text-secondary leading-snug">
-                    All client briefs, academic records, and travel registries are handled
-                    under strict private banking discretion protocols.
-                  </p>
-                </div>
-              </div>
-
-              {/* Narrative Copy & Direct WhatsApp Link */}
-              <div className="lg:col-span-6 flex flex-col items-start lg:pl-space-md mt-space-lg lg:mt-0">
-                <span className="font-label-lg text-label-lg uppercase tracking-[0.2em] text-primary mb-space-xs font-semibold">
-                  Bespoke Human Touch
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-secondary-container mb-space-md leading-tight font-bold">
-                  Not just a service.
-                  <br />
-                  Someone to help you get it done.
-                </h2>
-                <p className="font-body-lg text-body-lg text-secondary mb-space-sm leading-relaxed">
-                  Every request is different. Whether you are navigating complicated
-                  British visa timing, securing last-minute seat upgrades on Emirates, or
-                  managing a child's transition to boarding school, QVC provides one
-                  seasoned point of contact.
-                </p>
-                <p className="font-body-md text-body-md text-secondary mb-space-lg leading-relaxed">
-                  We take the administrative friction off your hands so you spend your
-                  valuable time where it counts—with family, board meetings, and the joy of
-                  arriving unburdened.
-                </p>
-
-                {/* Direct Liaison CTA Cluster */}
-                <div className="flex flex-wrap items-center gap-space-md">
-                  <a
-                    className="inline-flex items-center gap-space-sm bg-on-secondary-container text-on-primary px-space-md py-space-sm hover:bg-slate-800 transition-colors shadow-sm"
-                    href="https://wa.me/23418887800"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <span className="material-symbols-outlined text-[20px] text-primary-fixed-dim">
-                      chat
-                    </span>
-                    <span className="font-label-lg text-label-lg uppercase tracking-wider font-semibold">
-                      Talk to QVC on WhatsApp
-                    </span>
-                  </a>
-                  <a
-                    className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase tracking-wider text-primary hover:text-on-secondary-container transition-colors py-space-xs font-semibold"
-                    data-path="about-qvc"
-                    href="#qvc-difference-section"
-                  >
-                    <span className="border-b border-primary pb-0.5">Learn Our Pedigree</span>
-                    <span className="material-symbols-outlined text-[16px]">
-                      arrow_forward
-                    </span>
-                  </a>
                 </div>
 
-                {/* Trust Metric Strip */}
-                <div className="grid grid-cols-3 gap-space-md pt-space-lg mt-space-lg border-t border-outline w-full">
-                  <div>
-                    <span className="font-headline-md text-headline-md text-primary block font-bold">
-                      10+
+                {/* Right Column Typographic Word-Art Flow */}
+                <div className="order-3 z-10 flex h-full flex-col justify-between gap-10 lg:gap-0 lg:py-10 pointer-events-none select-none">
+                  {/* Top Right Cluster */}
+                  <div className="text-right space-y-1 pr-2 sm:pr-6 lg:pr-4 xl:pr-8">
+                    <span className="block text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-brand-obsidian">
+                      Education
                     </span>
-                    <span className="font-label-md text-label-md uppercase text-on-surface-variant font-medium">
-                      Years Global Advisement
+                    <span className="block text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase text-brand-blue">
+                      School Placement
                     </span>
-                  </div>
-                  <div>
-                    <span className="font-headline-md text-headline-md text-primary block font-bold">
-                      99%
-                    </span>
-                    <span className="font-label-md text-label-md uppercase text-on-surface-variant font-medium">
-                      Client Retention Rate
+                    <span className="block text-[11px] sm:text-xs uppercase tracking-[0.28em] text-slate-400 font-medium pt-1">
+                      Opportunities
                     </span>
                   </div>
-                  <div>
-                    <span className="font-headline-md text-headline-md text-primary block font-bold">
-                      &lt; 2h
+                  {/* Mid Right Cluster */}
+                  <div className="text-right space-y-1.5 pr-4 sm:pr-10 lg:pr-8 xl:pr-12">
+                    <span className="block text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-brand-navy">
+                      Concierge
                     </span>
-                    <span className="font-label-md text-label-md uppercase text-on-surface-variant font-medium">
-                      Average Desk Response
+                    <span className="block text-sm sm:text-base font-semibold tracking-wide text-brand-blue">
+                      24/7 Dedicated Care
+                    </span>
+                    <span className="block text-lg sm:text-xl font-bold tracking-tight text-slate-300">Lifestyle</span>
+                  </div>
+                  {/* Bottom Right Cluster */}
+                  <div className="text-right space-y-1 pr-2 sm:pr-6 xl:pr-10">
+                    <span className="block text-xs sm:text-sm uppercase tracking-[0.22em] text-slate-400 font-semibold">
+                      Tailored Living
+                    </span>
+                    <span className="block text-xl sm:text-2xl xl:text-3xl font-bold tracking-tight text-brand-obsidian">
+                      Personal Assistance
+                    </span>
+                    <span className="block text-xs sm:text-sm font-bold tracking-wide text-brand-blue mt-1">
+                      Discover More &bull; And Beyond
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
 
-          {/* SECTION 5: CONTACT AND ENQUIRY DESK */}
-          <section
-            className="w-full py-space-xl px-margin md:px-space-xl lg:px-margin-desktop bg-surface-container-low border-t border-outline"
-            id="enquiry-form"
-          >
-            <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
-                {/* Sidebar Dossier & Protocol */}
-                <div className="lg:col-span-5 flex flex-col">
-                  <span className="font-label-lg text-label-lg uppercase tracking-[0.2em] text-primary mb-space-xs font-semibold">
-                    Private Client Desk
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-secondary-container mb-space-sm font-bold">
-                    What can we help you with?
-                  </h2>
-                  <p className="font-body-md text-body-md text-secondary mb-space-lg leading-relaxed">
-                    Tell us what you are looking for. We will analyze your brief, identify
-                    the optimal service corridor, and assign a dedicated advisor to guide
-                    you through next steps.
-                  </p>
-                  <div className="bg-surface p-space-md mb-space-md border border-outline shadow-sm">
-                    <h4 className="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-semibold">
-                      Prefer Immediate Conversation?
-                    </h4>
-                    <p className="font-body-sm text-body-sm text-secondary mb-space-sm">
-                      Our Senior Desk Coordinator is active for urgent departure
-                      adjustments and prompt consultations.
-                    </p>
-                    <a
-                      className="inline-flex items-center gap-space-xs font-label-lg text-label-lg uppercase tracking-wider text-primary hover:text-on-secondary-container transition-colors font-semibold"
-                      href="https://wa.me/23418887800"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">chat</span>
-                      <span className="border-b border-primary pb-0.5">
-                        Or speak with an advisor on WhatsApp
-                      </span>
-                    </a>
-                  </div>
-                  <div className="flex flex-col gap-space-xs font-body-sm text-body-sm text-secondary">
-                    <div className="flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-primary text-[16px]">
-                        schedule
-                      </span>
-                      <span>
-                        Advisory Hours: Monday – Saturday, 8:00am – 7:00pm WAT
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-space-xs">
-                      <span className="material-symbols-outlined text-primary text-[16px]">
-                        mail
-                      </span>
-                      <span>
-                        Enquiries monitored continuously for registered families
-                      </span>
+            {/* Trust Credentials Horizontal Ribbon */}
+            <div className="mt-14 pt-8 border-t border-brand-border/80 max-w-4xl mx-auto">
+              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs sm:text-sm font-semibold text-brand-slate">
+                {CREDENTIALS.map((credential, index) => (
+                  <div className="flex items-center gap-6 sm:gap-12" key={credential.label}>
+                    {index > 0 ? <div className="hidden sm:block w-px h-4 bg-slate-200" /> : null}
+                    <div className="flex items-center gap-2 hover:text-brand-navy transition-colors">
+                      <span className={`p-1 rounded-full bg-blue-50 ${credential.tone}`}>{credential.icon}</span>
+                      <span>{credential.label}</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Multi-Field Interactive Dossier Form */}
-                <div className="lg:col-span-7 bg-surface p-space-lg border border-outline shadow-[0_16px_40px_-12px_rgba(15,23,42,0.06)]">
-                  <form
-                    className="flex flex-col gap-space-md"
-                    id="qvc-concierge-enquiry-form"
-                    onSubmit={handleFormSubmit}
-                  >
-                    {/* Full Name */}
-                    <div className="flex flex-col gap-1">
-                      <label
-                        className="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold"
-                        htmlFor="client-name"
-                      >
-                        Full Name *
-                      </label>
-                      <input
-                        className="w-full bg-surface-container-low border border-outline px-space-md py-space-sm font-body-md text-body-md text-on-surface placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                        id="client-name"
-                        placeholder="e.g. Dr. Adebayo Sterling"
-                        required
-                        type="text"
-                      />
-                    </div>
-
-                    {/* Email & Phone Dual Column */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-                      <div className="flex flex-col gap-1">
-                        <label
-                          className="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold"
-                          htmlFor="client-email"
-                        >
-                          Email Address *
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low border border-outline px-space-md py-space-sm font-body-md text-body-md text-on-surface placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                          id="client-email"
-                          placeholder="name@domain.com"
-                          required
-                          type="email"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <label
-                          className="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold"
-                          htmlFor="client-phone"
-                        >
-                          Phone / WhatsApp *
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low border border-outline px-space-md py-space-sm font-body-md text-body-md text-on-surface placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                          id="client-phone"
-                          placeholder="+234 800 000 0000"
-                          required
-                          type="tel"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Service Selection */}
-                    <div className="flex flex-col gap-1">
-                      <label
-                        className="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold"
-                        htmlFor="client-service"
-                      >
-                        Service of Interest *
-                      </label>
-                      <select
-                        className="w-full bg-surface-container-low border border-outline px-space-md py-space-sm font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                        id="client-service"
-                        required
-                        defaultValue=""
-                      >
-                        <option disabled value="">
-                          Select a service corridor...
-                        </option>
-                        <option value="tickets">
-                          Flight Tickets &amp; Private Aviation
-                        </option>
-                        <option value="tours">Curated Tours &amp; Expeditions</option>
-                        <option value="visa">
-                          Visa Assistance &amp; Consular Protocol
-                        </option>
-                        <option value="school">
-                          School Placement (UK / US / Europe)
-                        </option>
-                        <option value="concierge">
-                          Personal Concierge &amp; Lifestyle Management
-                        </option>
-                        <option value="unsure">
-                          Not sure yet / Multi-service Request
-                        </option>
-                      </select>
-                    </div>
-
-                    {/* Preferred Channel */}
-                    <div className="flex flex-col gap-1">
-                      <label className="font-label-md text-label-md uppercase tracking-wider text-secondary mb-1 font-semibold">
-                        Preferred Contact Method
-                      </label>
-                      <div className="grid grid-cols-3 gap-space-sm">
-                        <label className="flex items-center gap-space-xs p-space-xs bg-surface-container-low border border-outline cursor-pointer hover:border-primary transition-colors">
-                          <input
-                            defaultChecked
-                            className="accent-primary"
-                            name="contact-method"
-                            type="radio"
-                            value="WhatsApp"
-                          />
-                          <span className="font-body-sm text-body-sm text-on-surface">
-                            WhatsApp
-                          </span>
-                        </label>
-                        <label className="flex items-center gap-space-xs p-space-xs bg-surface-container-low border border-outline cursor-pointer hover:border-primary transition-colors">
-                          <input
-                            className="accent-primary"
-                            name="contact-method"
-                            type="radio"
-                            value="Email"
-                          />
-                          <span className="font-body-sm text-body-sm text-on-surface">
-                            Email
-                          </span>
-                        </label>
-                        <label className="flex items-center gap-space-xs p-space-xs bg-surface-container-low border border-outline cursor-pointer hover:border-primary transition-colors">
-                          <input
-                            className="accent-primary"
-                            name="contact-method"
-                            type="radio"
-                            value="Phone"
-                          />
-                          <span className="font-body-sm text-body-sm text-on-surface">
-                            Phone Call
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Brief Description */}
-                    <div className="flex flex-col gap-1">
-                      <label
-                        className="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold"
-                        htmlFor="client-notes"
-                      >
-                        Brief Description of the Request
-                      </label>
-                      <textarea
-                        className="w-full bg-surface-container-low border border-outline px-space-md py-space-sm font-body-md text-body-md text-on-surface placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                        id="client-notes"
-                        placeholder="Please outline travel dates, student age, destination preferences, or specific timings..."
-                        rows={3}
-                      ></textarea>
-                    </div>
-
-                    {/* Submit Button & Feedback Area */}
-                    <div className="pt-space-xs flex flex-col gap-space-sm">
-                      {formStatus !== 'submitted' && (
-                        <button
-                          className="w-full inline-flex items-center justify-center gap-space-sm bg-primary-container text-on-primary font-label-lg text-label-lg uppercase tracking-widest py-space-md hover:bg-primary transition-colors shadow-md group font-semibold"
-                          id="submit-btn"
-                          type="submit"
-                          disabled={formStatus === 'submitting'}
-                        >
-                          {formStatus === 'submitting' ? (
-                            <span>Processing Encrypted Brief...</span>
-                          ) : (
-                            <>
-                              <span>Send My Enquiry</span>
-                              <span className="material-symbols-outlined text-[18px] text-white group-hover:translate-x-1 transition-transform">
-                                arrow_forward
-                              </span>
-                            </>
-                          )}
-                        </button>
-                      )}
-
-                      {/* Inline Feedback Banner */}
-                      {formStatus === 'submitted' && (
-                        <div
-                          className="p-space-md bg-secondary-container border-l-4 border-primary text-on-surface"
-                          id="enquiry-feedback"
-                        >
-                          <div className="flex items-center gap-space-xs mb-1">
-                            <span className="material-symbols-outlined text-primary text-[20px]">
-                              check_circle
-                            </span>
-                            <span className="font-headline-sm text-headline-sm text-on-secondary-container font-semibold">
-                              Enquiry Transmitted
-                            </span>
-                          </div>
-                          <p className="font-body-sm text-body-sm text-secondary">
-                            Thank you. Your request dossier has been assigned to a Senior
-                            Concierge Liaison. We will reach out via your preferred method
-                            shortly.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </main>
-
-      {/* FOOTER */}
-      <footer className="w-full bg-surface-container-low border-t border-outline">
-        <div className="w-full px-margin md:px-space-xl lg:px-margin-desktop py-space-xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-gutter-desktop">
-            <div className="lg:col-span-4 flex flex-col items-start">
-              <div className="flex items-center gap-space-sm mb-space-sm">
-                <img
-                  alt="QVC-logo.jpg"
-                  className="h-7 w-auto object-contain"
-                  src={LOGO_URL}
-                  onError={handleLogoError}
-                />
-                <span className="font-headline-sm text-headline-sm text-on-secondary-container leading-none font-bold">
-                  QVC Concierge
-                </span>
-              </div>
-              <p className="font-body-md text-body-md text-secondary max-w-sm mb-space-md">
-                Travel, education and personalised concierge services, all in one place.
-              </p>
-              <div className="flex flex-col gap-space-xs">
-                <span className="font-label-md text-label-md uppercase text-primary font-semibold tracking-widest">
-                  Private Client Desk
-                </span>
-                <span className="font-body-sm text-body-sm text-on-surface">
-                  concierge@qvc-group.com
-                </span>
-                <span className="font-body-sm text-body-sm text-on-surface">
-                  +234 (0) 1 888 7800
-                </span>
-              </div>
-            </div>
-
-            <div className="lg:col-span-3 flex flex-col">
-              <span className="font-label-lg text-label-lg uppercase text-primary font-bold tracking-widest mb-space-md">
-                Services Portfolio
-              </span>
-              <div className="flex flex-col gap-space-sm">
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="tickets"
-                  href="/tickets-and-aviation"
-                >
-                  Tickets &amp; Private Aviation
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="tours"
-                  href="/curated-tours"
-                >
-                  Curated Expeditions &amp; Tours
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="visa-assistance"
-                  href="/visa-consultancy"
-                >
-                  Visa &amp; Consular Protocol
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="school-placement"
-                  href="/school-placement"
-                >
-                  Global School Placement
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="concierge-services"
-                  href="/concierge-lifestyle"
-                >
-                  Bespoke Concierge Services
-                </a>
-              </div>
-            </div>
-
-            <div className="lg:col-span-2 flex flex-col">
-              <span className="font-label-lg text-label-lg uppercase text-primary font-bold tracking-widest mb-space-md">
-                Navigation
-              </span>
-              <div className="flex flex-col gap-space-sm">
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="home"
-                  href="/"
-                >
-                  Home
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="about-qvc"
-                  href="#qvc-difference-section"
-                >
-                  About QVC
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="how-it-works"
-                  href="#how-it-works"
-                >
-                  How It Works
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="make-an-enquiry"
-                  href="#enquiry-form"
-                >
-                  Make an Enquiry
-                </a>
-                <a
-                  className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                  data-path="contact"
-                  href="#enquiry-form"
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-
-            <div className="lg:col-span-3 flex flex-col">
-              <span className="font-label-lg text-label-lg uppercase text-primary font-bold tracking-widest mb-space-md">
-                Institutional Presence
-              </span>
-              <div className="bg-surface p-space-md mb-space-md border border-outline shadow-sm">
-                <span className="font-label-md text-label-md uppercase text-primary font-bold block mb-space-xs">
-                  Accredited &amp; Partnered
-                </span>
-                <p className="font-body-sm text-body-sm text-secondary">
-                  IATA Certified Agent • BBSN Advisory • Global Education Liaison Network
-                </p>
-              </div>
-              <div className="flex items-center gap-space-sm">
-                <span className="font-label-md text-label-md uppercase px-space-sm py-space-xs bg-surface border border-outline text-secondary font-semibold">
-                  Lagos
-                </span>
-                <span className="font-label-md text-label-md uppercase px-space-sm py-space-xs bg-surface border border-outline text-secondary font-semibold">
-                  London
-                </span>
-                <span className="font-label-md text-label-md uppercase px-space-sm py-space-xs bg-surface border border-outline text-secondary font-semibold">
-                  Dubai
-                </span>
+                ))}
               </div>
             </div>
           </div>
+        </section>
+        {/* END: HeroSection */}
 
-          <div className="mt-space-xl pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md border-t border-outline">
-            <span className="font-body-sm text-body-sm text-secondary">
-              © 2025 QVC Concierge. All rights reserved. Discreet luxury advisement and
-              travel management.
-            </span>
-            <div className="flex items-center gap-space-lg">
-              <a
-                className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                data-path="privacy-policy"
-                href="#"
+        {/* BEGIN: ServicesSection */}
+        <section className="py-24 bg-brand-surface border-t border-brand-border scroll-mt-20" id="services">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            {/* Section Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div className="max-w-2xl">
+                <p className="text-xs uppercase tracking-[0.22em] text-brand-blue font-bold mb-2">Our Capabilities</p>
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-brand-navy font-sans">
+                  A World of Services. One Place to Begin.
+                </h2>
+                <p className="mt-3 text-brand-slate text-sm sm:text-base leading-relaxed">
+                  Explore the services you need, discover new possibilities and let our team help coordinate the next
+                  steps.
+                </p>
+              </div>
+              <div>
+                <a
+                  className="inline-flex items-center gap-2 text-sm font-bold text-brand-blue hover:text-brand-blueHover transition-colors group"
+                  href="#enquiry"
+                >
+                  <span>Explore All Services</span>
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-1 font-bold">
+                    &rarr;
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Asymmetric Editorial Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+              {SERVICES.map((service) => (
+                <ServiceCard key={service.id} service={service} />
+              ))}
+            </div>
+          </div>
+        </section>
+        {/* END: ServicesSection */}
+
+        {/* BEGIN: HowItWorksSection */}
+        <section className="py-24 bg-white scroll-mt-20" id="how-it-works">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="text-xs uppercase tracking-[0.22em] text-brand-blue font-bold mb-2">Simple Process</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-navy font-sans tracking-tight">
+                One Conversation. We&apos;ll Help With the Rest.
+              </h2>
+              <p className="mt-3 text-brand-slate text-sm sm:text-base leading-relaxed">
+                From first touchpoint to smooth fulfillment, our team ensures every coordination is effortless.
+              </p>
+            </div>
+
+            {/* 3 Sequential Steps */}
+            <div className="relative">
+              <div className="hidden lg:block absolute top-10 left-[15%] right-[15%] h-[2px] bg-slate-100 z-0" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 relative z-10">
+                {STEPS.map((step) => (
+                  <div
+                    className="bg-brand-surface lg:bg-transparent rounded-2xl p-6 lg:p-4 text-center flex flex-col items-center"
+                    key={step.number}
+                  >
+                    <div
+                      className={`w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center font-extrabold text-lg mb-6 ${
+                        step.accent
+                          ? 'bg-blue-50 border border-blue-200/70 text-brand-blue'
+                          : 'bg-white border border-brand-border text-brand-navy'
+                      }`}
+                    >
+                      {step.number}
+                    </div>
+                    <h3 className="text-lg font-bold text-brand-navy mb-2">{step.title}</h3>
+                    <p className="text-brand-slate text-sm leading-relaxed max-w-xs">{step.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* END: HowItWorksSection */}
+
+        {/* BEGIN: TrustAdvisorySection */}
+        <section className="py-24 bg-brand-surface border-t border-brand-border scroll-mt-20" id="trust">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              {/* Left: Image & Advisory Narrative */}
+              <div className="lg:col-span-6 relative">
+                <div className="relative rounded-3xl overflow-hidden shadow-subtle border border-brand-border bg-white p-2">
+                  <img
+                    alt="Personalized concierge advisory team"
+                    className="w-full h-[420px] object-cover rounded-2xl"
+                    decoding="async"
+                    loading="lazy"
+                    src={IMAGES.advisory}
+                  />
+                  <div className="absolute bottom-6 left-6 right-6 bg-brand-navy/90 backdrop-blur-md rounded-2xl p-4 text-white border border-white/10">
+                    <p className="text-xs font-semibold text-brand-blue uppercase tracking-widest mb-1">
+                      Human-Centered Coordination
+                    </p>
+                    <p className="text-sm font-medium leading-snug">
+                      &ldquo;Dedicated advisors who understand your family&apos;s timeline, privacy, and
+                      preferences.&rdquo;
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Detail & Verification Checkmarks */}
+              <div className="lg:col-span-6">
+                <p className="text-xs uppercase tracking-[0.22em] text-brand-blue font-bold mb-2">Dedicated Advisory</p>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-navy font-sans tracking-tight leading-tight mb-4">
+                  Thoughtful Support.
+                  <br />
+                  Every Step of the Way.
+                </h2>
+                <p className="text-brand-slate text-sm sm:text-base leading-relaxed mb-6">
+                  Every request is different. QVC brings a personal approach to coordinating the services, arrangements
+                  and opportunities that matter to you.
+                </p>
+                <div className="space-y-4 mb-8">
+                  {TRUST_POINTS.map((point) => (
+                    <div className="flex items-start gap-3.5" key={point.title}>
+                      <div className="w-6 h-6 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-xs">
+                        &#10003;
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-brand-navy">{point.title}</h4>
+                        <p className="text-xs text-brand-slate mt-0.5">{point.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <a
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-brand-border text-brand-navy text-xs sm:text-sm font-semibold hover:border-slate-300 hover:bg-brand-mist/50 transition-all shadow-sm"
+                  href="#enquiry"
+                >
+                  <span>Speak With an Advisor</span>
+                  <span aria-hidden="true" className="text-brand-blue">
+                    &rarr;
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* END: TrustAdvisorySection */}
+
+        {/* BEGIN: EnquirySection */}
+        <section className="py-24 bg-brand-navy text-white relative overflow-hidden scroll-mt-20" id="enquiry">
+          <div className="max-w-4xl mx-auto px-6 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <p className="text-xs uppercase tracking-[0.25em] text-brand-blue font-bold mb-2">Direct Intake</p>
+              <h2 className="text-3xl sm:text-5xl font-extrabold font-sans tracking-tight mb-3">
+                Where Can We Help You Go?
+              </h2>
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                Tell us what you have in mind. We&apos;ll help you find the right service and guide you through the next
+                steps.
+              </p>
+            </div>
+
+            {/* Conversational Intake Form with Obsidian-Contrast Styling */}
+            {enquirySent ? (
+              <div
+                className="bg-[#111827]/70 backdrop-blur-xl p-8 sm:p-10 rounded-3xl border border-white/10 text-center max-w-2xl mx-auto shadow-2xl"
+                role="status"
               >
-                Privacy Policy
-              </a>
-              <a
-                className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                data-path="terms-of-service"
-                href="#"
+                <div className="w-12 h-12 rounded-full bg-brand-blue/20 text-brand-blue flex items-center justify-center mx-auto mb-5 text-xl font-bold">
+                  &#10003;
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight mb-3">Enquiry Received</h3>
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                  Thank you for your enquiry. A senior QVC Concierge advisor will review your request and get in touch
+                  promptly.
+                </p>
+                <button
+                  className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-blue hover:text-white transition-colors"
+                  onClick={() => setEnquirySent(false)}
+                  type="button"
+                >
+                  <span>Send Another Enquiry</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </button>
+              </div>
+            ) : (
+              <form
+                className="bg-[#111827]/70 backdrop-blur-xl p-8 sm:p-10 rounded-3xl border border-white/10 text-left max-w-2xl mx-auto shadow-2xl"
+                onSubmit={handleEnquirySubmit}
               >
-                Terms of Service
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                  <div>
+                    <label
+                      className="block text-xs uppercase tracking-wider font-semibold text-slate-300 mb-2"
+                      htmlFor="enquiry-name"
+                    >
+                      Full Name
+                    </label>
+                    <input
+                      autoComplete="name"
+                      className="w-full bg-white/10 border-white/20 rounded-xl text-sm text-white placeholder-slate-400 focus:border-brand-blue focus:ring-brand-blue py-3 px-4 transition-colors"
+                      id="enquiry-name"
+                      name="fullName"
+                      placeholder="e.g. Eleanor Vance"
+                      required
+                      type="text"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className="block text-xs uppercase tracking-wider font-semibold text-slate-300 mb-2"
+                      htmlFor="enquiry-contact"
+                    >
+                      Email or Phone Number
+                    </label>
+                    <input
+                      autoComplete="email"
+                      className="w-full bg-white/10 border-white/20 rounded-xl text-sm text-white placeholder-slate-400 focus:border-brand-blue focus:ring-brand-blue py-3 px-4 transition-colors"
+                      id="enquiry-contact"
+                      name="contact"
+                      placeholder="name@domain.com or +44..."
+                      required
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <label
+                    className="block text-xs uppercase tracking-wider font-semibold text-slate-300 mb-2"
+                    htmlFor="enquiry-service"
+                  >
+                    Service of Interest
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="w-full bg-white/10 border-white/20 rounded-xl text-sm text-white focus:border-brand-blue focus:ring-brand-blue py-3 px-4 appearance-none cursor-pointer"
+                      defaultValue="Tickets"
+                      id="enquiry-service"
+                      name="service"
+                    >
+                      {SERVICE_OPTIONS.map((option) => (
+                        <option className="bg-brand-navy text-white" key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-300">
+                      <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <label
+                    className="block text-xs uppercase tracking-wider font-semibold text-slate-300 mb-2"
+                    htmlFor="enquiry-brief"
+                  >
+                    Brief Description
+                  </label>
+                  <textarea
+                    className="w-full bg-white/10 border-white/20 rounded-xl text-sm text-white placeholder-slate-400 focus:border-brand-blue focus:ring-brand-blue p-4 transition-colors"
+                    id="enquiry-brief"
+                    name="brief"
+                    placeholder="Please outline destinations, preferred dates, schooling objectives, or specific requirements..."
+                    rows="3"
+                  />
+                </div>
+                <button
+                  className="w-full py-4 rounded-full bg-brand-blue hover:bg-brand-blueHover text-white font-bold text-sm tracking-wide shadow-glow-cobalt transition-all duration-200"
+                  type="submit"
+                >
+                  Tell Us What You Need &rarr;
+                </button>
+                <p className="text-center text-[11px] text-slate-400 mt-4">
+                  Strictly confidential. An advisor typically responds within 2 business hours.
+                </p>
+              </form>
+            )}
+          </div>
+        </section>
+        {/* END: EnquirySection */}
+      </main>
+
+      {/* BEGIN: FooterSection */}
+      <footer className="bg-white border-t border-brand-border py-12 text-brand-slate text-xs">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-slate-100">
+            {/* Column 1: Brand */}
+            <div className="md:col-span-2">
+              <a className="flex items-center gap-3 mb-3 group" href="#home">
+                <img alt="QVC Concierge" className="w-8 h-8 object-contain rounded-full" src={LOGO_SRC} />
+                <span className="font-sans font-extrabold text-brand-navy text-base tracking-wider">QVC CONCIERGE</span>
               </a>
-              <a
-                className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors"
-                data-path="security"
-                href="#"
-              >
-                Client Discretion
-              </a>
+              <p className="text-brand-slate text-xs leading-relaxed max-w-sm mb-4">
+                One destination for five world-class services: flight tickets, bespoke tours, visa guidance, UK &amp;
+                global education advisory, and dedicated lifestyle concierge.
+              </p>
+              <div className="text-[11px] text-brand-muted">
+                IATA Certified Agency &bull; British Boarding Schools Network Advisory
+              </div>
+            </div>
+
+            {/* Column 2: Services */}
+            <div>
+              <h4 className="text-xs uppercase tracking-wider font-bold text-brand-navy mb-3">Our Services</h4>
+              <ul className="space-y-2 text-xs">
+                {FOOTER_SERVICES.map((item) => (
+                  <li key={item.label}>
+                    <a className="hover:text-brand-blue transition-colors" href={item.href}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Contact & Legal */}
+            <div>
+              <h4 className="text-xs uppercase tracking-wider font-bold text-brand-navy mb-3">Private Client Desk</h4>
+              <ul className="space-y-2 text-xs">
+                {FOOTER_DESK.map((item) => (
+                  <li key={item.label}>
+                    <a className="hover:text-brand-blue transition-colors" href={item.href}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-brand-muted">
+            <div>&copy; 2026 QVC Concierge. All rights reserved.</div>
+            <div className="flex items-center gap-6">
+              <span>Licensed Global Operator</span>
+              <span aria-hidden="true">&bull;</span>
+              <span>Discreet Family Advisory</span>
             </div>
           </div>
         </div>
       </footer>
-    </>
+      {/* END: FooterSection */}
+    </div>
   );
 }
