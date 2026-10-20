@@ -34,3 +34,114 @@
 @media(max-width:1000px){.attaché-card{position:static;margin-top:30px;width:auto;max-width:430px}.concierge-ticker{margin-top:35px}.concierge-editorial,.concierge-inquiry{grid-template-columns:1fr}.concierge-pillars article,.concierge-pillars article:nth-child(n){grid-column:span 6}.framework-steps,.guarantee-grid{grid-template-columns:repeat(2,1fr)}.engagement-card{grid-template-columns:1fr}}@media(max-width:760px){.concierge-hero,.concierge-editorial,.concierge-section,.concierge-framework,.concierge-inquiry,.guarantee-section{padding-top:60px;padding-bottom:60px}.concierge-hero h1{font-size:41px}.concierge-hero>div:first-child>p{font-size:15px}.concierge-ticker{grid-template-columns:1fr 1fr}.concierge-editorial{display:block}.concierge-image{min-height:330px;margin-bottom:30px}.concierge-metrics{gap:6px}.concierge-metrics span{padding:9px;font-size:8px}.concierge-pillars article,.concierge-pillars article:nth-child(n){grid-column:auto}.concierge-pillars,.framework-steps,.guarantee-grid{grid-template-columns:1fr}.concierge-inquiry .form-two,.category-options{grid-template-columns:1fr}.privacy-card{display:block}.privacy-card small{display:block;margin:10px 0 0}.concierge-final{display:block}.concierge-final .primary-button,.concierge-final .secondary-button{width:100%;margin-top:12px}}
 .routed-page > .app main{padding-top:0}.booking-wrap{display:block}.booking-wrap .traveler{display:none}.booking-card{max-width:100%;margin-inline:auto}
 .routed-page .logo small{display:none}
+
+/* ==========================================================================
+   UI UPGRADE LAYER
+   Appended last so it overrides the page rules above. Loaded on every page.
+   ========================================================================== */
+
+/* --- Skip link ----------------------------------------------------------- */
+.skip-link{position:fixed;top:-120px;left:12px;z-index:200;padding:13px 20px;border-radius:9px;background:var(--primary-container);color:#fff;font-size:13px;font-weight:700;letter-spacing:.04em;box-shadow:0 10px 26px rgba(0,114,206,.35);transition:top .2s ease}
+.skip-link:focus{top:12px}
+
+/* --- Anchor offset: the header is sticky on every page ------------------- */
+html:has(.routed-page){scroll-padding-top:128px}
+@media(max-width:760px){html:has(.routed-page){scroll-padding-top:84px}}
+
+/* --- iOS zooms the viewport on focus for any input under 16px ------------ */
+@media(max-width:760px){
+  input,select,textarea{font-size:16px!important}
+}
+
+/* --- Touch targets: 44px minimum ---------------------------------------- */
+input[type=checkbox],input[type=radio]{width:21px;height:21px;min-width:21px;min-height:21px;accent-color:var(--primary-container)}
+.check-label,.nda-label{display:flex;align-items:center;gap:11px;min-height:44px}
+.primary-button,.quote-button,.secondary-button,.light-button,.dark-button,.soft-button{min-height:44px}
+.person-button,.mobile-menu{width:44px;height:44px}
+.nav>a,.service-menu a,.routed-footer nav a{display:flex;align-items:center;min-height:44px}
+.itinerary-body footer button{min-height:44px}
+
+/* --- Readability: micro-labels were 8-9px ------------------------------- */
+.logo small,
+.visa-metrics span,
+.school-metrics span,
+.institution-strip>b,
+.event-image span,.event-image b,
+.console-fields small,
+.airline-image span,.airline-image b,
+.airline-grid footer small,
+.dossier-card header small,
+.dossier-card header em,
+.dossier-row b,
+.selector-output aside small,
+.visa-testimonial-grid footer small,
+.visa-stat-row span,
+.itinerary-image>div span,.itinerary-image>div b,
+.itinerary-body footer button,
+.velocity-card small,
+.group-pillars small,
+.lifecycle>div:first-child>strong small,
+.size-options small,
+.group-testimonials footer small,
+.compliance-pill small,
+.compliance-pill em,
+.concierge-metrics span{font-size:11px}
+@media(max-width:1100px){.utility{font-size:11px}}
+@media(max-width:760px){
+  body{font-size:16px}
+  .ticket-trust{font-size:11px}
+  .logo small{font-size:11px}
+  .school-metrics span,.visa-stat-row span,.concierge-metrics span{font-size:11px}
+}
+
+/* --- Mobile navigation drawer for the routed service pages -------------- */
+.mobile-menu{display:none}
+.services-nav.open .service-menu{display:block}
+@media(max-width:760px){
+  .mobile-menu{display:grid}
+  .routed-page .nav{
+    display:none;position:absolute;top:72px;left:0;right:0;
+    margin:0;padding:10px 18px 22px;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:#fff;border-bottom:1px solid var(--border);
+    box-shadow:0 20px 44px rgba(11,25,44,.14);
+    max-height:calc(100dvh - 72px);overflow-y:auto;
+  }
+  .routed-page .nav.open{display:flex}
+  .routed-page .nav>a{display:flex}
+  .routed-page .services-nav{display:flex;flex-direction:column;align-items:stretch;padding:0}
+  .routed-page .services-nav>button{display:none}
+  .routed-page .service-menu{display:block;position:static;width:100%;margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+  .routed-page .service-menu a{padding:10px 0}
+  .routed-page .nav-drawer-contact{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding-top:12px;border-top:1px solid var(--border)}
+  .routed-page .nav-drawer-contact a{display:flex;align-items:center;gap:9px;min-height:44px;color:var(--primary);font-weight:700;letter-spacing:.04em}
+}
+.nav-drawer-contact{display:none}
+
+/* --- Mobile layout optimisation ----------------------------------------- */
+/* overflow-x:clip (not hidden) — "hidden" would make body a scroll container
+   and break position:sticky on the landing page header. */
+body{overflow-x:clip}
+.routed-page{min-height:100dvh}
+
+@media(max-width:760px){
+  /* The utility bar hides below 760px, so the fixed header is 72px, not 120px */
+  .routed-page{padding-top:72px}
+  /* 760px of forced hero height is taller than most phones */
+  .holiday-hero{min-height:auto;padding-top:52px;padding-bottom:56px}
+  .group-hero{min-height:auto;padding-top:52px;padding-bottom:56px}
+  .ticket-final>div{min-width:0}
+  .footer-news input{min-width:0;width:100%}
+  /* Breathing room above the home indicator / browser chrome */
+  .routed-footer{padding-bottom:calc(28px + env(safe-area-inset-bottom, 0px))}
+}
+
+/* Tighter vertical rhythm on small screens: the service pages use 60-80px
+   section padding, which reads as dead space on a phone. */
+@media(max-width:480px){
+  .visa-page section,.school-page section,.tours-page section,
+  .flight-page section,.flight-ticketing-page section,.visa-services-page section,
+  .tours-holiday-page section,.group-tours-page section,.corporate-page section,
+  .concierge-page section{padding-top:44px;padding-bottom:44px}
+  .nav-row{padding:0 16px}
+}
