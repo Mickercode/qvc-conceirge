@@ -8,7 +8,7 @@
     <title>QVC Concierge | Whatever Life Takes You To. We'll Help You Get There.</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <style>
       @layer base {
@@ -32,6 +32,14 @@
       /* Anchor targets must clear the sticky header */
       html {
         scroll-padding-top: 96px;
+      }
+      @keyframes heroFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-9px); }
+      }
+      .hero-float {
+        animation: heroFloat 7s ease-in-out infinite;
+        will-change: transform;
       }
       /* Site-wide reduced-motion guard: applies to every page */
       @media (prefers-reduced-motion: reduce) {
@@ -136,20 +144,20 @@
               "editorial-image": "0 30px 60px -15px rgba(11, 25, 44, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.8)"
             },
             "fontFamily": {
-              "sans": ["Plus Jakarta Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-              "headline-md": ["Plus Jakarta Sans", "sans-serif"],
-              "body-sm": ["Plus Jakarta Sans", "sans-serif"],
-              "display-md": ["Plus Jakarta Sans", "sans-serif"],
-              "display-sm": ["Plus Jakarta Sans", "sans-serif"],
-              "display-lg": ["Plus Jakarta Sans", "sans-serif"],
-              "body-md": ["Plus Jakarta Sans", "sans-serif"],
-              "label-lg": ["Plus Jakarta Sans", "sans-serif"],
-              "headline-lg-mobile": ["Plus Jakarta Sans", "sans-serif"],
-              "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
-              "body-lg": ["Plus Jakarta Sans", "sans-serif"],
-              "label-md": ["Plus Jakarta Sans", "sans-serif"],
-              "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
-              "display": ["Plus Jakarta Sans", "sans-serif"]
+              "sans": ["Manrope", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+              "headline-md": ["Manrope", "sans-serif"],
+              "body-sm": ["Manrope", "sans-serif"],
+              "display-md": ["Manrope", "sans-serif"],
+              "display-sm": ["Manrope", "sans-serif"],
+              "display-lg": ["Manrope", "sans-serif"],
+              "body-md": ["Manrope", "sans-serif"],
+              "label-lg": ["Manrope", "sans-serif"],
+              "headline-lg-mobile": ["Manrope", "sans-serif"],
+              "headline-sm": ["Manrope", "sans-serif"],
+              "body-lg": ["Manrope", "sans-serif"],
+              "label-md": ["Manrope", "sans-serif"],
+              "headline-lg": ["Manrope", "sans-serif"],
+              "display": ["Manrope", "sans-serif"]
             },
             "fontSize": {
               "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
