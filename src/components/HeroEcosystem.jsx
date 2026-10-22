@@ -121,12 +121,12 @@ export default function HeroEcosystem() {
 
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
-            <h1 className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-brand-blue sm:text-5xl xl:text-[56px]">
-              We&apos;ll Help You Get There.
+            <h1 className="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl sm:leading-[1.08] xl:text-[56px]">
+              <span className="block text-brand-navy">Everywhere You&apos;re Headed.</span>
+              <span className="block text-brand-blue">One Team to Get You There.</span>
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
-              From journeys and new opportunities to life&apos;s important details, discover services and personalised
-              support in one place.
+              From flights and visas to schooling abroad, a dedicated advisor handles every detail.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               <a
