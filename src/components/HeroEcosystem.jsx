@@ -121,9 +121,9 @@ export default function HeroEcosystem() {
 
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
-            <h1 className="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl sm:leading-[1.08] xl:text-[56px]">
-              <span className="block text-brand-navy">Everywhere You&apos;re Headed.</span>
-              <span className="block text-brand-blue">One Team to Get You There.</span>
+            <h1 className="text-[2rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]">
+              <span className="block">Everywhere You&apos;re Headed.</span>
+              <span className="block">One Team to Get You There.</span>
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
               From flights and visas to schooling abroad, a dedicated advisor handles every detail.
