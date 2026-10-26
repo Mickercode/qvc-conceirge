@@ -116,16 +116,14 @@ export default function HeroEcosystem() {
       <div className="relative mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8 xl:max-w-[1400px]">
         {/* The stage: centred message, with the service ecosystem floating
             around it from xl up. */}
-        <div className="relative flex flex-col justify-center xl:min-h-[480px]">
+        <div className="relative flex flex-col justify-center xl:min-h-[400px]">
           {ORBITS}
 
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
-            <h1 className="text-[2rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]">
-              <span className="block">Everywhere You&apos;re Headed.</span>
-              <span className="block">One Team to Get You There.</span>
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
+            {/* Headline intentionally absent while the copy is being settled.
+                NOTE: the page has no h1 until it returns. */}
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-brand-slate sm:text-lg">
               From flights and visas to schooling abroad, a dedicated advisor handles every detail.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
