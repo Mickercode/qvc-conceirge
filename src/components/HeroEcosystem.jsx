@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   AcademicCapIcon,
   ArrowLongRightIcon,
@@ -51,6 +52,35 @@ const HERO_PHOTOS = [
 ];
 
 const CATEGORIES = ['Travel', 'Education', 'Lifestyle', 'Concierge', 'More'];
+
+/** Headlines cycled in the hero. Edit, reorder or add freely. */
+export const HERO_HEADLINES = [
+  'All Your Travel Needs, Seamlessly Handled',
+  'One Agency. Endless Destinations.',
+  'Your All-in-One Travel Gateway',
+  'Stress-Free Travel, Built from Start to Finish.',
+];
+
+const HEADLINE_INTERVAL_MS = 4000;
+
+/**
+ * Cycles the headline index. Holds on the first line when the viewer prefers
+ * reduced motion, and pauses while the pointer rests on the headline so the
+ * copy can be read at leisure.
+ */
+function useRotatingHeadline(count, intervalMs) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || count < 2) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const timer = window.setInterval(() => setIndex((current) => (current + 1) % count), intervalMs);
+    return () => window.clearInterval(timer);
+  }, [count, intervalMs, paused]);
+
+  return { index, setPaused };
+}
 
 /** Faint orbital guides and connection dots. Decorative only. */
 const ORBITS = (
@@ -108,6 +138,8 @@ function FloatingItem({ children, side, top, edge, index }) {
 }
 
 export default function HeroEcosystem() {
+  const { index, setPaused } = useRotatingHeadline(HERO_HEADLINES.length, HEADLINE_INTERVAL_MS);
+
   return (
     <section
       className="relative overflow-hidden bg-gradient-to-b from-brand-canvas via-brand-surface to-white pb-14 pt-10 sm:pb-16 sm:pt-12 lg:pt-14 xl:pb-20"
@@ -116,14 +148,35 @@ export default function HeroEcosystem() {
       <div className="relative mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8 xl:max-w-[1400px]">
         {/* The stage: centred message, with the service ecosystem floating
             around it from xl up. */}
-        <div className="relative flex flex-col justify-center xl:min-h-[400px]">
+        <div className="relative flex flex-col justify-center xl:min-h-[480px]">
           {ORBITS}
 
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
-            {/* Headline intentionally absent while the copy is being settled.
-                NOTE: the page has no h1 until it returns. */}
-            <p className="mx-auto max-w-xl text-base leading-relaxed text-brand-slate sm:text-lg">
+            <h1
+              className="text-[2rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+            >
+              {/* A stable accessible name, so the rotation never re-announces
+                  the heading to screen readers. */}
+              <span className="sr-only">{HERO_HEADLINES[0]}</span>
+              {/* All lines share one grid cell, so the block is as tall as the
+                  longest of them and rotating shifts nothing below it. */}
+              <span aria-hidden="true" className="grid">
+                {HERO_HEADLINES.map((line, position) => (
+                  <span
+                    className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+                      position === index ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    key={line}
+                  >
+                    {line}
+                  </span>
+                ))}
+              </span>
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
               From flights and visas to schooling abroad, a dedicated advisor handles every detail.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
