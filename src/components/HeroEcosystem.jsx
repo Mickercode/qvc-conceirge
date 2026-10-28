@@ -53,11 +53,16 @@ const HERO_PHOTOS = [
 
 const CATEGORIES = ['Travel', 'Education', 'Lifestyle', 'Concierge', 'More'];
 
-/** Headlines cycled in the hero. Edit, reorder or add freely. */
+/**
+ * Headlines cycled in the hero, each written as its own two lines rather than
+ * left to wrap. Natural wrapping broke them at different and awkward points
+ * ("One Stop, endless / destinations"), and changed with the viewport.
+ * Keep each line under ~20 characters so it holds on a 375px phone.
+ */
 export const HERO_HEADLINES = [
-  'One Stop, endless destinations',
-  'The one-stop trip shop',
-  'Your All-in-One Travel Gateway',
+  ['One Stop,', 'Endless Destinations'],
+  ['The One-Stop', 'Trip Shop'],
+  ['Your All-in-One', 'Travel Gateway'],
 ];
 
 const HEADLINE_INTERVAL_MS = 4000;
@@ -153,24 +158,28 @@ export default function HeroEcosystem() {
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
             <h1
-              className="text-[2rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]"
+              className="text-[1.75rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
               {/* A stable accessible name, so the rotation never re-announces
                   the heading to screen readers. */}
-              <span className="sr-only">{HERO_HEADLINES[0]}</span>
-              {/* All lines share one grid cell, so the block is as tall as the
-                  longest of them and rotating shifts nothing below it. */}
+              <span className="sr-only">{HERO_HEADLINES[0].join(' ')}</span>
+              {/* All headlines share one grid cell, so the block is as tall as
+                  the tallest and rotating shifts nothing below it. */}
               <span aria-hidden="true" className="grid items-center">
-                {HERO_HEADLINES.map((line, position) => (
+                {HERO_HEADLINES.map((lines, position) => (
                   <span
                     className={`col-start-1 row-start-1 transition-opacity duration-500 ${
                       position === index ? 'opacity-100' : 'opacity-0'
                     }`}
-                    key={line}
+                    key={lines.join(' ')}
                   >
-                    {line}
+                    {lines.map((line) => (
+                      <span className="block" key={line}>
+                        {line}
+                      </span>
+                    ))}
                   </span>
                 ))}
               </span>
