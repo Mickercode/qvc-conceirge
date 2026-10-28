@@ -55,10 +55,9 @@ const CATEGORIES = ['Travel', 'Education', 'Lifestyle', 'Concierge', 'More'];
 
 /** Headlines cycled in the hero. Edit, reorder or add freely. */
 export const HERO_HEADLINES = [
-  'All Your Travel Needs, Seamlessly Handled',
-  'One Agency. Endless Destinations.',
+  'One Stop, endless destinations',
+  'The one-stop trip shop',
   'Your All-in-One Travel Gateway',
-  'Stress-Free Travel, Built from Start to Finish.',
 ];
 
 const HEADLINE_INTERVAL_MS = 4000;
@@ -163,7 +162,7 @@ export default function HeroEcosystem() {
               <span className="sr-only">{HERO_HEADLINES[0]}</span>
               {/* All lines share one grid cell, so the block is as tall as the
                   longest of them and rotating shifts nothing below it. */}
-              <span aria-hidden="true" className="grid">
+              <span aria-hidden="true" className="grid items-center">
                 {HERO_HEADLINES.map((line, position) => (
                   <span
                     className={`col-start-1 row-start-1 transition-opacity duration-500 ${
