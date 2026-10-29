@@ -55,14 +55,16 @@ const CATEGORIES = ['Travel', 'Education', 'Lifestyle', 'Concierge', 'More'];
 
 /**
  * Headlines cycled in the hero, each written as its own two lines rather than
- * left to wrap. Natural wrapping broke them at different and awkward points
- * ("One Stop, endless / destinations"), and changed with the viewport.
- * Keep each line under ~20 characters so it holds on a 375px phone.
+ * left to wrap. Natural wrapping broke them at different and awkward points,
+ * and moved those breaks around with the viewport.
+ *
+ * Keep each line to ~22 characters. That is what the smallest step of the
+ * type scale (26px) can fit in the 335px a 375px phone leaves; a longer line
+ * re-wraps and the breaks stop being consistent again.
  */
 export const HERO_HEADLINES = [
-  ['One Stop,', 'Endless Destinations'],
   ['The One-Stop', 'Trip Shop'],
-  ['Your All-in-One', 'Travel Gateway'],
+  ['Your Travel Gateway to', 'Unlimited Destinations'],
 ];
 
 const HEADLINE_INTERVAL_MS = 4000;
@@ -158,7 +160,7 @@ export default function HeroEcosystem() {
           {/* Central message */}
           <div className="relative z-20 mx-auto max-w-[46rem] text-center">
             <h1
-              className="text-[1.75rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-5xl sm:leading-[1.08] xl:text-[56px]"
+              className="text-[1.625rem] font-extrabold leading-[1.14] tracking-tight text-brand-blue sm:text-[2.5rem] sm:leading-[1.08] md:text-5xl xl:text-[56px]"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
